@@ -149,6 +149,35 @@
                     "endDateColumn": "2024-10-18",
                     "referenceDateColumn": "2024-09-18"
                 }
+            ],
+            "specificValuesRules": [
+                {
+                    "columnName": "_status",
+                    "allowedValues": [
+                        "realizado",
+                        "validado",
+                        "incognito"
+                    ]
+                },
+                {
+                    "columnName": "_tipo",
+                    "allowedValues": [
+                        "primario",
+                        "secundario",
+                        "terciario"
+                    ]
+                }
+            ],
+            "conditionalNonNullRules": [
+                {
+                    "selectedColumn": "_estado",
+                    "selectedValue": "realizado",
+                    "comparedColumns": [
+                        "_fecha_de_intervención",
+                        "_profesional_de_intervención",
+                        "_id_de_foto"
+                    ]
+                }
             ]
         }
     },
