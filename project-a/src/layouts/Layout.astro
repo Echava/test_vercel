@@ -1,0 +1,37 @@
+---
+import AsideMenu from '../components/AsideMenu.astro'
+interface  Props {
+    title: string
+}
+const { title } = Astro.props
+---
+<!doctype html>
+<html lang="en">
+    <head>
+        <!--link to global css file-->
+        <meta charset="UTF-8">  
+        <link rel="stylesheet" href="/public/styles/global.css">
+        <title>{title}</title>
+        <!-- Importar HTMX -->
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    </head>
+    <body>
+        <div id="app" class="relative h-screen p-2 gap-2">
+            
+            <aside class="grid-area-aside flex-col flex overflow-y-auto">                
+                <AsideMenu/>
+            </aside>
+
+            <main class="grid-area-main rounded-lg bg-zinc-400 overflow-y-auto w-full">
+                
+                <slot />
+            </main>
+
+            <footer class="grid-area-footer bg-gradient-to-t from-slate-900 via-slate-900/90 min-h-[100px]">
+                
+
+        </div>
+
+
+    </body>
+</html>
