@@ -5,18 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Categories {
-    private List<String> nulidadFunction;
-    private List<VariableTypeFunction> variableTypeFunction;
-    private List<SizeFunction> sizeFunction;
-    private List<MinMaxFunction> minimiumAndMaximunFunction;
-    private List<String> duplicationFunction;
-    private List<ComparisonFunction> comparisonsWithOtherColumnFunction;
-    private List<DateComparisonFunction> comparisonsWithDateFunction;
+    private List<String> nullRules;
+    private List<String> notNullRules;
+    private List<VariableTypeFunction> variableTypeRules;
+    private List<SizeFunction> sizeRules;
+    private List<MinMaxFunction> minimumAndMaximumRules;
+    private List<String> duplicationRules;
+    private List<ComparisonFunction> comparisonsWithOtherColumnRules;
+    private List<DateComparisonFunction> comparisonsWithDateRules;
+    private List<RangeWithWordModel> rangeWithWordRules;
+    private List<OrderColumn> orderColumnsRules;
+    private List<DateRangeRule> dateRangeRules;
+    private List<ConditionalNonNullRules> conditionalNonNullRules;
 }

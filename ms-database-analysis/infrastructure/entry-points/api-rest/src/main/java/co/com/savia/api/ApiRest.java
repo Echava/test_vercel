@@ -2,7 +2,6 @@ package co.com.savia.api;
 
 import co.com.savia.api.models.ValidationRules;
 import co.com.savia.api.util.Util;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriter;
 import lombok.AllArgsConstructor;
@@ -25,52 +24,12 @@ import java.util.*;
 public class ApiRest {
 //    private final MyUseCase useCase;
 
-
     //@PreAuthorize("hasRole('permission')")
     @GetMapping(path = "/path")
     public String commandName() {
 //      return useCase.doAction();
         return "Hello World";
     }
-
-
-    //@PreAuthorize("hasRole('permission')")
-    @PostMapping("/upload-excel")
-    public ResponseEntity<String> uploadExcel(@RequestParam("db-file") MultipartFile dbFile,
-                                              @RequestParam("br-file") MultipartFile brFile) {
-
-        log.info("Se inicia el proceso");
-        ObjectMapper objectMapper = new ObjectMapper();
-        try (InputStream inputStream = dbFile.getInputStream();
-             Workbook workbook = new XSSFWorkbook(inputStream)) {
-
-            // Asume que trabajamos con la primera hoja
-            Sheet sheet = workbook.getSheetAt(0);
-
-            // Toma la primera fila (cabeceras)
-            Row headerRow = sheet.getRow(0);
-
-            if (headerRow == null) {
-                return new ResponseEntity<>("El archivo no contiene cabeceras", HttpStatus.BAD_REQUEST);
-            }
-
-            // Itera sobre las celdas de la primera fila (cabeceras) y las imprime en consola
-            for (int i = 0; i < headerRow.getPhysicalNumberOfCells(); i++) {
-                String header = headerRow.getCell(i).getStringCellValue();
-                log.info("Cabecera: " + header);
-            }
-            JsonNode jsonNode = objectMapper.readTree(brFile.getInputStream());
-            log.info("Contenido del archivo JSON: {}", jsonNode.toString());
-
-            return new ResponseEntity<>("Cabeceras procesadas correctamente", HttpStatus.OK);
-
-        } catch (IOException e) {
-
-            log.error("error en el proceso: {}", e.getMessage());
-            return new ResponseEntity<>("Error al procesar el archivo", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     //@PreAuthorize("hasRole('permission')")
     @PostMapping("/upload-excel-dos")
@@ -189,41 +148,7 @@ public class ApiRest {
         return objectMapper.readValue(brFile.getInputStream(), ValidationRules.class);
     }
 
-    // Validar los registros según las reglas de negocio
-    /*
-    public List<String> validateRecords(List<Map<String, String>> records, ValidationRules validationRules) {
-        List<String> errors = new ArrayList<>();
-        Categories rules = validationRules.getRules().getCategories();
 
-        // Recorrer cada registro
-        for (Map<String, String> record : records) {
-
-            // Validar nulidad
-            Util.validateFieldsNull(record, rules.getNulidadFunction(), errors);
-
-            // Validar tipo de variable
-            Util.validateVariableType(record, rules.getVariableTypeFunction(), errors);
-
-            // Validar longitud de cadena
-            Util.validateSize(record, rules.getSizeFunction(), errors);
-
-            // Validar mínimos y máximos
-            Util.validateMinMax(record, rules.getMinimiumAndMaximunFunction(), errors);
-
-            // Validar duplicación (esto podría ser otra función si necesitas analizar duplicados entre varios registros)
-            Util.validateDuplications(record, records, rules.getDuplicationFunction(), errors);
-
-            // Validar comparaciones entre columnas
-            Util.validateComparisons(record, rules.getComparisonsWithOtherColumnFunction(), errors);
-
-            // Validar comparaciones de fechas
-            Util.validateDateComparisons(record, rules.getComparisonsWithDateFunction(), errors);
-        }
-
-        return errors;
-    }
-
-     */
     public String validateRecords(List<Map<String, String>> records, ValidationRules rules, String fileName) {
 
         List<String[]> errorRows = new ArrayList<>();
@@ -247,50 +172,58 @@ public class ApiRest {
             }
 
             // Listas para recolectar errores por categoría
-            List<String> errorsNulidad = new ArrayList<>();
-            List<String> errorsTipo = new ArrayList<>();
-            List<String> errorsSize = new ArrayList<>();
-            List<String> errorsDuplicacion = new ArrayList<>();
-            List<String> errorsComparacion = new ArrayList<>();
-            List<String> errorsComparacionFecha = new ArrayList<>();
-            List<String> errorsMinMax = new ArrayList<>();
+            List<String> nullErrors = new ArrayList<>();
+            List<String> notNullErrors = new ArrayList<>();
+            List<String> variableTypeErrors = new ArrayList<>();
+            List<String> sizeErrors = new ArrayList<>();
+            List<String> minMaxErrors = new ArrayList<>();
+            List<String> duplicationErrors = new ArrayList<>();
+            List<String> comparisonBetweenColumnsErrors= new ArrayList<>();
+            List<String> comparisonsWithDateErrors = new ArrayList<>();
+            List<String> orderColumnsErrors = new ArrayList<>();
+            List<String> rangeWithWordErrors = new ArrayList<>();
+            List<String> dateRangeInReferenceErrors = new ArrayList<>();
+            List<String> conditionalNonNullErrors = new ArrayList<>();
 
             // Validar campos no nulos
-            Util.validateFieldsNull(record, rules.getRules().getCategories().getNulidadFunction(), errorsNulidad);
-
+            Util.validateFieldsNotNull(record, rules.getRules().getCategories().getNotNullRules(), notNullErrors);
+            // Validar campos nulos
+            Util.validateFieldsNull(record, rules.getRules().getCategories().getNullRules(), nullErrors);
             // Validar tipo de variables
-            Util.validateVariableType(record, rules.getRules().getCategories().getVariableTypeFunction(), errorsTipo);
-
+            Util.validateVariableType(record, rules.getRules().getCategories().getVariableTypeRules(), variableTypeErrors);
             // Validar tamaños
-            Util.validateSize(record, rules.getRules().getCategories().getSizeFunction(), errorsSize);
-
+            Util.validateSize(record, rules.getRules().getCategories().getSizeRules(), sizeErrors);
             // Validar mínimos y máximos
-            Util.validateMinMax(record, rules.getRules().getCategories().getMinimiumAndMaximunFunction(), errorsMinMax);
-
+            Util.validateMinMax(record, rules.getRules().getCategories().getMinimumAndMaximumRules(), minMaxErrors);
             // Validar duplicaciones
-            Util.validateDuplications(record, records, rules.getRules().getCategories().getDuplicationFunction(), errorsDuplicacion);
-
+            Util.validateDuplications(record, records, rules.getRules().getCategories().getDuplicationRules(), duplicationErrors);
             // Validar comparaciones entre campos
-            Util.validateComparisons(record, rules.getRules().getCategories().getComparisonsWithOtherColumnFunction(), errorsComparacion);
-
+            Util.validateComparisonsBetweenColumns(record, rules.getRules().getCategories().getComparisonsWithOtherColumnRules(), comparisonBetweenColumnsErrors);
             // Validar comparaciones de fechas
-            Util.validateDateComparisons(record, rules.getRules().getCategories().getComparisonsWithDateFunction(), errorsComparacionFecha);
+            Util.validateDateComparisons(record, rules.getRules().getCategories().getComparisonsWithDateRules(), comparisonsWithDateErrors);
+            // Validar orden de columnas
+            Util.validateColumnOrder(record, rules.getRules().getCategories().getOrderColumnsRules(), orderColumnsErrors);
+            // Validar rango con palabra
+            Util.validateRangeWithWord(record, rules.getRules().getCategories().getRangeWithWordRules(), rangeWithWordErrors);
+            // Validar fechas entre rangos
+            Util.validateDatesInRange(record, rules.getRules().getCategories().getDateRangeRules(), dateRangeInReferenceErrors);
+            // Validar condicionales not nul
+            Util.validateConditionalNonNull(record, rules.getRules().getCategories().getConditionalNonNullRules(), conditionalNonNullErrors);
 
             // Agregar los errores a las columnas correspondientes
-            errorRow[3] = String.join("; ", errorsNulidad); // Nulidad
-            errorRow[4] = String.join("; ", errorsTipo);    // Tipo de variable
-            errorRow[5] = String.join("; ", errorsSize);  // Tamaño
-            errorRow[6] = String.join("; ", errorsDuplicacion); // Duplicación
-            errorRow[7] = String.join("; ", errorsComparacion); // Comparación entre campos
-            errorRow[8] = String.join("; ", errorsComparacionFecha); // Comparación entre fechas
-            errorRow[9] = String.join("; ", errorsMinMax); // MinMax
+            errorRow[3] = String.join("; ", nullErrors); // Nulidad
+            errorRow[4] = String.join("; ", variableTypeErrors);    // Tipo de variable
+            errorRow[5] = String.join("; ", sizeErrors);  // Tamaño
+            errorRow[6] = String.join("; ", duplicationErrors); // Duplicación
+            errorRow[7] = String.join("; ", comparisonBetweenColumnsErrors); // Comparación entre campos
+            errorRow[8] = String.join("; ", comparisonsWithDateErrors); // Comparación entre fechas
+            errorRow[9] = String.join("; ", minMaxErrors); // MinMax
 
             // Agregar los errores por cada categoría, separados por comas en una sola fila
             // Añadir la fila con errores a la lista de errores
             errorRows.add(errorRow);
         }
         // Generar el archivo de errores
-
         return generateErrorFileExcel(errorRows, fileName);
     }
 

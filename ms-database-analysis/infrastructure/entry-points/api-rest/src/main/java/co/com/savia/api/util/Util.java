@@ -13,21 +13,33 @@ import java.util.Map;
 @Log4j2
 public class Util {
 
-    public static void validateFieldsNull(Map<String, String> record, List<String> fieldsNotNulls, List<String> errors) {
+    public static void validateFieldsNotNull(Map<String, String> record, List<String> fieldsNotNulls, List<String> errors) {
         List<String> nullFieldErrors = new ArrayList<>();
 
         for (String field : fieldsNotNulls) {
-            if (record.get(field) == null || record.get(field).isEmpty()) {
-                nullFieldErrors.add("El campo " + field + " no puede ser nulo o vacío");
+            if (record.get("_record_id") == null || record.get(field).isEmpty()) {
+                nullFieldErrors.add("El campo " + field + " no puede ser nulo o vacio");
             }
         }
 
-        // Si hay errores de campos nulos o vacíos, concatenarlos y añadirlos a la lista de errores
         if (!nullFieldErrors.isEmpty()) {
-            errors.add(String.join(" : ", nullFieldErrors));
+            errors.add(String.join("; ", nullFieldErrors));
         }
     }
 
+    public static void validateFieldsNull(Map<String, String> record, List<String> fieldNulls, List<String> errors) {
+        List<String> nullFieldErrors = new ArrayList<>();
+
+        for (String field : fieldNulls) {
+            if (record.get(field) != null || !record.get(field).isEmpty()) {
+                nullFieldErrors.add("El campo " + field + " debe ser nulo o vacio");
+            }
+        }
+
+        if (!nullFieldErrors.isEmpty()) {
+            errors.add(String.join("; ", nullFieldErrors));
+        }
+    }
 
 
     public static void validateVariableType(Map<String, String> record, List<VariableTypeFunction> variableTypeRules, List<String> errors) {
@@ -38,12 +50,40 @@ public class Util {
 
             if (value != null && !value.isEmpty()) {
                 try {
-                    if (rule.getType().equals("numeric") && !value.matches("-?\\d+(\\.\\d+)?")) {
-                        typeValidationErrors.add("El campo " + rule.getName() + " debe ser numérico");
-                    } else if (rule.getType().equals("string") && !value.matches("[\\p{L}\\p{N}\\p{P}\\p{S}\\s]+")) {
-                        typeValidationErrors.add("El campo " + rule.getName() + " debe ser un texto válido");
-                    } else if (rule.getType().equals("uuid") && !value.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
-                        typeValidationErrors.add("El campo " + rule.getName() + " debe ser un UUID válido");
+                    switch (rule.getType()) {
+                        case "numeric":
+                            if (!value.matches("-?\\d+(\\.\\d+)?")) {
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser numérico");
+                            }
+                            break;
+                        case "string":
+                            if (!value.matches("[\\p{L}\\p{N}\\p{P}\\p{S}\\s]+")) {
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser un texto válido");
+                            }
+                            break;
+                        case "uuid":
+                            if (!value.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser un UUID válido");
+                            }
+                            break;
+                        case "binary":
+                            if (!value.matches("[01]")) { // Validar solo "0" o "1"
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser binario (0 o 1)");
+                            }
+                            break;
+                        case "true_false":
+                            if (!value.equalsIgnoreCase("verdadero") && !value.equalsIgnoreCase("falso")) { // Validar "verdadero" o "falso"
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser 'verdadero' o 'falso'");
+                            }
+                            break;
+                        case "yes_no":
+                            if (!value.equalsIgnoreCase("si") && !value.equalsIgnoreCase("no")) { // Validar "si" o "no"
+                                typeValidationErrors.add("El campo " + rule.getName() + " debe ser 'si' o 'no'");
+                            }
+                            break;
+                        default:
+                            typeValidationErrors.add("El campo " + rule.getName() + " tiene un tipo desconocido: " + rule.getType());
+                            break;
                     }
                 } catch (NumberFormatException e) {
                     log.error("Error en validateVariableType: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record);
@@ -54,10 +94,9 @@ public class Util {
 
         // Si hay errores de validación de tipo, concatenarlos y añadirlos a la lista de errores
         if (!typeValidationErrors.isEmpty()) {
-            errors.add(String.join(" : ", typeValidationErrors));
+            errors.add(String.join("; ", typeValidationErrors));
         }
     }
-
 
     public static void validateSize(Map<String, String> record, List<SizeFunction> sizeRules, List<String> errors) {
         List<String> sizeErrors = new ArrayList<>();
@@ -70,7 +109,7 @@ public class Util {
         }
 
         if (!sizeErrors.isEmpty()) {
-            errors.add(String.join(" : ", sizeErrors));
+            errors.add(String.join("; ", sizeErrors));
         }
     }
 
@@ -96,7 +135,7 @@ public class Util {
 
         // Si se encontraron errores de min/max, los concatenamos y añadimos a la lista de errores
         if (!minMaxErrors.isEmpty()) {
-            errors.add(String.join(" : ", minMaxErrors));
+            errors.add(String.join("; ", minMaxErrors));
         }
     }
 
@@ -118,12 +157,12 @@ public class Util {
 
         // Si hay múltiples errores de duplicación, los concatenamos en un solo mensaje
         if (!duplicationErrors.isEmpty()) {
-            errors.add(String.join(" : ", duplicationErrors));
+            errors.add(String.join("; ", duplicationErrors));
         }
     }
 
 
-    public static void validateComparisons(Map<String, String> record, List<ComparisonFunction> comparisonRules, List<String> errors) {
+    public static void validateComparisonsBetweenColumns(Map<String, String> record, List<ComparisonFunction> comparisonRules, List<String> errors) {
         List<String> comparisonErrors = new ArrayList<>(); // Lista temporal para acumular los errores de comparaciones
 
         for (ComparisonFunction rule : comparisonRules) {
@@ -164,10 +203,9 @@ public class Util {
 
         // Si se encontraron errores de comparación, los concatenamos y añadimos a la lista de errores
         if (!comparisonErrors.isEmpty()) {
-            errors.add(String.join(" : ", comparisonErrors));
+            errors.add(String.join("; ", comparisonErrors));
         }
     }
-
 
 
     public static void validateDateComparisons(Map<String, String> record, List<DateComparisonFunction> dateComparisonRules, List<String> errors) {
@@ -213,7 +251,174 @@ public class Util {
 
         // Si hay errores en las comparaciones de fechas, los concatenamos y añadimos a la lista principal de errores
         if (!dateComparisonErrors.isEmpty()) {
-            errors.add(String.join(" : ", dateComparisonErrors));
+            errors.add(String.join("; ", dateComparisonErrors));
+        }
+    }
+
+    public static void validateRangeWithWord(Map<String, String> record, List<RangeWithWordModel> rangeRules, List<String> errors) {
+        List<String> rangeTypeValidationErrors = new ArrayList<>();
+
+        for (RangeWithWordModel rule : rangeRules) {
+            String rangeValueStr = record.get(rule.getRangeColumn());
+            String typeValue = record.get(rule.getTypeColumn());
+
+            if (rangeValueStr != null && !rangeValueStr.isEmpty()) {
+                try {
+                    double rangeValue = Double.parseDouble(rangeValueStr);
+
+                    // Validar si el valor está dentro del rango especificado en la regla
+                    if (rangeValue >= rule.getMin() && rangeValue <= rule.getMax()) {
+                        // Verificar que el valor de la columna de tipo coincida con el tipo esperado
+                        if (typeValue == null || !typeValue.equals(rule.getExpectedType())) {
+                            rangeTypeValidationErrors.add("El campo " + rule.getTypeColumn() +
+                                    " debe ser '" + rule.getExpectedType() + "' cuando " +
+                                    rule.getRangeColumn() + " está en el rango [" + rule.getMin() + ", " + rule.getMax() + "]");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("Error en validateRangeWithType: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record);
+                    rangeTypeValidationErrors.add("El campo " + rule.getRangeColumn() + " debe ser numérico para aplicar la validación de rango");
+                }
+            }
+        }
+
+        // Si hay errores de validación de rango y tipo, concatenarlos y añadirlos a la lista de errores
+        if (!rangeTypeValidationErrors.isEmpty()) {
+            errors.add(String.join("; ", rangeTypeValidationErrors));
+        }
+    }
+
+    public static void validateColumnOrder(Map<String, String> record, List<OrderColumn> orderColumn, List<String> errors) {
+        List<String> orderValidationErrors = new ArrayList<>();
+
+        for (OrderColumn rule : orderColumn) {
+            List<String> columns = rule.getColumns();
+            String orderType = rule.getOrderType();
+
+            List<Double> values = new ArrayList<>();
+            boolean allValuesParsed = true;
+
+            // Extraer y convertir los valores de las columnas seleccionadas
+            for (String column : columns) {
+                String valueStr = record.get(column);
+
+                try {
+                    if (valueStr != null && !valueStr.isEmpty()) {
+                        values.add(Double.parseDouble(valueStr));
+                    } else {
+                        values.add(null); // Añadir null si el valor está vacío
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("Error en validateColumnOrder: Valor no numérico en columna '{}', ID: {}, record: {}", column, record.get("id"), record);
+                    orderValidationErrors.add("El campo " + column + " debe ser numérico para aplicar la validación de orden.");
+                    allValuesParsed = false;
+                }
+            }
+
+            // Continuar solo si todos los valores pudieron ser convertidos a numéricos
+            if (allValuesParsed) {
+                boolean isOrdered = true;
+
+                // Verificar el orden dependiendo de 'ascendente' o 'descendente'
+                for (int i = 1; i < values.size(); i++) {
+                    Double prevValue = values.get(i - 1);
+                    Double currValue = values.get(i);
+
+                    if (prevValue != null && currValue != null) {
+                        if ("ascendente".equalsIgnoreCase(orderType) && prevValue > currValue) {
+                            isOrdered = false;
+                            break;
+                        } else if ("descendente".equalsIgnoreCase(orderType) && prevValue < currValue) {
+                            isOrdered = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Si el orden es incorrecto, se añade un mensaje de error
+                if (!isOrdered) {
+                    orderValidationErrors.add("Las columnas " + columns + " deben estar en orden " + orderType + ".");
+                }
+            }
+        }
+
+        // Si hay errores de validación de orden, concatenarlos y añadirlos a la lista de errores
+        if (!orderValidationErrors.isEmpty()) {
+            errors.add(String.join("; ", orderValidationErrors));
+        }
+    }
+
+
+    public static void validateDatesInRange(Map<String, String> record, List<DateRangeRule> dateRangeRules, List<String> errors) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Ajusta el formato si es necesario
+        List<String> dateValidationErrors = new ArrayList<>();
+
+        for (DateRangeRule rule : dateRangeRules) {
+            String startDateStr = record.get(rule.getStartDateColumn());
+            String endDateStr = record.get(rule.getEndDateColumn());
+            String referenceDateStr = record.get(rule.getReferenceDateColumn());
+
+            // Verificar que las fechas no estén vacías
+            if (startDateStr == null || endDateStr == null || referenceDateStr == null) {
+                dateValidationErrors.add("Fechas en columnas " + rule.getStartDateColumn() + ", " + rule.getEndDateColumn() + " o " + rule.getReferenceDateColumn() + " están vacías.");
+                continue;
+            }
+
+            try {
+                LocalDate startDate = LocalDate.parse(startDateStr, dateFormatter);
+                LocalDate endDate = LocalDate.parse(endDateStr, dateFormatter);
+                String[] referenceDates = referenceDateStr.split(" - "); // Se asume que las fechas de rango están separadas por un guion
+
+                if (referenceDates.length == 2) {
+                    LocalDate referenceStartDate = LocalDate.parse(referenceDates[0].trim(), dateFormatter);
+                    LocalDate referenceEndDate = LocalDate.parse(referenceDates[1].trim(), dateFormatter);
+
+                    // Validar que la fecha de inicio y la fecha final estén contenidas en el rango
+                    if (startDate.isBefore(referenceStartDate) || endDate.isAfter(referenceEndDate)) {
+                        dateValidationErrors.add("El rango de fechas (" + startDateStr + " - " + endDateStr + ") debe estar contenido dentro de " + referenceDateStr);
+                    }
+                } else {
+                    dateValidationErrors.add("Formato de rango de fechas en la columna " + rule.getReferenceDateColumn() + " es incorrecto.");
+                }
+
+            } catch (DateTimeParseException e) {
+                log.error("Error en validateDateRangeInReference: Formato de fecha inválido en columnas '{}', '{}', o '{}', ID: {}, record: {}", rule.getStartDateColumn(), rule.getEndDateColumn(), rule.getReferenceDateColumn(), record.get("id"), record);
+                dateValidationErrors.add("Formato de fecha inválido en una de las columnas: " + rule.getStartDateColumn() + ", " + rule.getEndDateColumn() + ", " + rule.getReferenceDateColumn());
+            }
+        }
+
+        // Si hay errores de validación de fechas, concatenarlos y añadirlos a la lista de errores
+        if (!dateValidationErrors.isEmpty()) {
+            errors.add(String.join("; ", dateValidationErrors));
+        }
+    }
+
+    public static void validateConditionalNonNull(Map<String, String> record, List<ConditionalNonNullRules> rules,
+                                                  List<String> errors) {
+
+        // Lista para almacenar columnas que tienen valores nulos
+        List<String> missingColumns = new ArrayList<>();
+        // Recorre cada regla para aplicarla al registro
+        for (ConditionalNonNullRules rule : rules) {
+
+            // Obtiene el valor de la columna seleccionada en el registro actual
+            String selectedColumnValue = record.get(rule.getSelectedColumn());
+
+            // Verifica si el valor cumple la condición especificada en la regla
+            if (selectedColumnValue != null && selectedColumnValue.equals(rule.getSelectedValue())) {
+
+                for (String column : rule.getComparedColumns()) {
+                    String comparedValue = record.get(column);
+                    if (comparedValue == null || comparedValue.isEmpty()) {
+                        missingColumns.add(column);
+                    }
+                }
+
+            }
+            if (!missingColumns.isEmpty()) {
+                errors.add("Cuando " + rule.getSelectedColumn() + " es '" + rule.getSelectedValue() + "', "
+                        + "las siguientes columnas no deben ser nulas: " + String.join(", ", missingColumns));
+            }
         }
     }
 
