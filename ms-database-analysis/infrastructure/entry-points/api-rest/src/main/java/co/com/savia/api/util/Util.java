@@ -13,6 +13,7 @@ import java.util.Map;
 @Log4j2
 public class Util {
 
+    // 1 No Nulidad
     public static void validateFieldsNotNull(Map<String, String> record, List<String> fieldsNotNulls, List<String> errors) {
         List<String> nullFieldErrors = new ArrayList<>();
 
@@ -27,6 +28,7 @@ public class Util {
         }
     }
 
+    // 1,1 Nulidad
     public static void validateFieldsNull(Map<String, String> record, List<String> fieldNulls, List<String> errors) {
         List<String> nullFieldErrors = new ArrayList<>();
 
@@ -41,7 +43,7 @@ public class Util {
         }
     }
 
-
+    // 2 Tipo de variable
     public static void validateVariableType(Map<String, String> record, List<VariableTypeFunction> variableTypeRules, List<String> errors) {
         List<String> typeValidationErrors = new ArrayList<>(); // Lista temporal para almacenar los errores de validación de tipos
 
@@ -98,6 +100,7 @@ public class Util {
         }
     }
 
+    // 3 Longitud de cadena
     public static void validateSize(Map<String, String> record, List<SizeFunction> sizeRules, List<String> errors) {
         List<String> sizeErrors = new ArrayList<>();
 
@@ -113,33 +116,7 @@ public class Util {
         }
     }
 
-    public static void validateMinMax(Map<String, String> record, List<MinMaxFunction> minMaxRules, List<String> errors) {
-        List<String> minMaxErrors = new ArrayList<>();
-
-        for (MinMaxFunction rule : minMaxRules) {
-            String value = record.get(rule.getName());
-            if (value != null && !value.isEmpty()) {
-                try {
-                    double numericValue = Double.parseDouble(value);
-                    if (numericValue < rule.getMinValue() || numericValue > rule.getMaxValue()) {
-                        // Acumular el error en la lista temporal
-                        minMaxErrors.add("El campo " + rule.getName() + " debe estar entre " + rule.getMinValue() + " y " + rule.getMaxValue());
-                    }
-                } catch (NumberFormatException e) {
-                    log.error("Error en validateMinMax: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record.get(rule.getName()));
-                    // Acumular el error en la lista temporal
-                    minMaxErrors.add("El campo " + rule.getName() + " debe ser numérico");
-                }
-            }
-        }
-
-        // Si se encontraron errores de min/max, los concatenamos y añadimos a la lista de errores
-        if (!minMaxErrors.isEmpty()) {
-            errors.add(String.join("; ", minMaxErrors));
-        }
-    }
-
-
+    // 4 Duplicación
     public static void validateDuplications(Map<String, String> currentRecord, List<Map<String, String>> allRecords, List<String> duplicationFields, List<String> errors) {
         List<String> duplicationErrors = new ArrayList<>();
 
@@ -161,7 +138,47 @@ public class Util {
         }
     }
 
+    // 5 Emparejamiento con Biblioteca
 
+
+    // 6,1 Transformación númerica (área de polígono)
+
+
+    // 6,2 Transformación númerica (Tipologia de altura)
+    public static void validateRangeWithWord(Map<String, String> record, List<RangeWithWordModel> rangeRules, List<String> errors) {
+        List<String> rangeTypeValidationErrors = new ArrayList<>();
+
+        for (RangeWithWordModel rule : rangeRules) {
+            String rangeValueStr = record.get(rule.getRangeColumn());
+            String typeValue = record.get(rule.getTypeColumn());
+
+            if (rangeValueStr != null && !rangeValueStr.isEmpty()) {
+                try {
+                    double rangeValue = Double.parseDouble(rangeValueStr);
+
+                    // Validar si el valor está dentro del rango especificado en la regla
+                    if (rangeValue >= rule.getMin() && rangeValue <= rule.getMax()) {
+                        // Verificar que el valor de la columna de tipo coincida con el tipo esperado
+                        if (typeValue == null || !typeValue.equals(rule.getExpectedType())) {
+                            rangeTypeValidationErrors.add("El campo " + rule.getTypeColumn() +
+                                    " debe ser '" + rule.getExpectedType() + "' cuando " +
+                                    rule.getRangeColumn() + " está en el rango [" + rule.getMin() + ", " + rule.getMax() + "]");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    log.error("Error en validateRangeWithType: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record);
+                    rangeTypeValidationErrors.add("El campo " + rule.getRangeColumn() + " debe ser numérico para aplicar la validación de rango");
+                }
+            }
+        }
+
+        // Si hay errores de validación de rango y tipo, concatenarlos y añadirlos a la lista de errores
+        if (!rangeTypeValidationErrors.isEmpty()) {
+            errors.add(String.join("; ", rangeTypeValidationErrors));
+        }
+    }
+
+    // 7 Comparación con otra columana
     public static void validateComparisonsBetweenColumns(Map<String, String> record, List<ComparisonFunction> comparisonRules, List<String> errors) {
         List<String> comparisonErrors = new ArrayList<>(); // Lista temporal para acumular los errores de comparaciones
 
@@ -207,87 +224,36 @@ public class Util {
         }
     }
 
+    // 8 Comparación númerica
+    public static void validateMinMax(Map<String, String> record, List<MinMaxFunction> minMaxRules, List<String> errors) {
+        List<String> minMaxErrors = new ArrayList<>();
 
-    public static void validateDateComparisons(Map<String, String> record, List<DateComparisonFunction> dateComparisonRules, List<String> errors) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<String> dateComparisonErrors = new ArrayList<>(); // Lista temporal para los errores de comparación de fechas
-
-        for (DateComparisonFunction rule : dateComparisonRules) {
-            String dateOne = record.get(rule.getComparetorOne());
-            String dateTwo = record.get(rule.getComparetorTwo());
-
-            if (dateOne != null && dateTwo != null) {
+        for (MinMaxFunction rule : minMaxRules) {
+            String value = record.get(rule.getName());
+            if (value != null && !value.isEmpty()) {
                 try {
-                    LocalDate localDateOne = LocalDate.parse(dateOne, formatter);
-                    LocalDate localDateTwo = LocalDate.parse(dateTwo, formatter);
-
-                    switch (rule.getOperator()) {
-                        case "greater_than":
-                            if (!localDateOne.isAfter(localDateTwo)) {
-                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser posterior a " + rule.getComparetorTwo());
-                            }
-                            break;
-                        case "less_than":
-                            if (!localDateOne.isBefore(localDateTwo)) {
-                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser anterior a " + rule.getComparetorTwo());
-                            }
-                            break;
-                        case "equal_to":
-                            if (!localDateOne.equals(localDateTwo)) {
-                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser igual a " + rule.getComparetorTwo());
-                            }
-                            break;
-                    }
-                } catch (DateTimeParseException e) {
-                    log.error("Error en validateDateComparisons: {}, en ID: {}, recordOne: {}, recordTwo: {}", e.getMessage(), record.get("id"), record.get(rule.getComparetorOne()), record.get(rule.getComparetorTwo()));
-                    dateComparisonErrors.add("Los campos " + rule.getComparetorOne() + " y " + rule.getComparetorTwo() + " deben tener formato de fecha válido (yyyy-MM-dd)");
-                }
-            } else {
-                // Si uno de los campos es nulo
-                log.error("Error en validateDateComparisons: {}, en ID: {}, recordOne: {}, recordTwo: {}", "Fecha nula", record.get("id"), record.get(rule.getComparetorOne()), record.get(rule.getComparetorTwo()));
-                dateComparisonErrors.add("Los campos " + rule.getComparetorOne() + " y " + rule.getComparetorTwo() + " no deben estar vacíos o nulos");
-            }
-        }
-
-        // Si hay errores en las comparaciones de fechas, los concatenamos y añadimos a la lista principal de errores
-        if (!dateComparisonErrors.isEmpty()) {
-            errors.add(String.join("; ", dateComparisonErrors));
-        }
-    }
-
-    public static void validateRangeWithWord(Map<String, String> record, List<RangeWithWordModel> rangeRules, List<String> errors) {
-        List<String> rangeTypeValidationErrors = new ArrayList<>();
-
-        for (RangeWithWordModel rule : rangeRules) {
-            String rangeValueStr = record.get(rule.getRangeColumn());
-            String typeValue = record.get(rule.getTypeColumn());
-
-            if (rangeValueStr != null && !rangeValueStr.isEmpty()) {
-                try {
-                    double rangeValue = Double.parseDouble(rangeValueStr);
-
-                    // Validar si el valor está dentro del rango especificado en la regla
-                    if (rangeValue >= rule.getMin() && rangeValue <= rule.getMax()) {
-                        // Verificar que el valor de la columna de tipo coincida con el tipo esperado
-                        if (typeValue == null || !typeValue.equals(rule.getExpectedType())) {
-                            rangeTypeValidationErrors.add("El campo " + rule.getTypeColumn() +
-                                    " debe ser '" + rule.getExpectedType() + "' cuando " +
-                                    rule.getRangeColumn() + " está en el rango [" + rule.getMin() + ", " + rule.getMax() + "]");
-                        }
+                    double numericValue = Double.parseDouble(value);
+                    if (numericValue < rule.getMinValue() || numericValue > rule.getMaxValue()) {
+                        // Acumular el error en la lista temporal
+                        minMaxErrors.add("El campo " + rule.getName() + " debe estar entre " + rule.getMinValue() + " y " + rule.getMaxValue());
                     }
                 } catch (NumberFormatException e) {
-                    log.error("Error en validateRangeWithType: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record);
-                    rangeTypeValidationErrors.add("El campo " + rule.getRangeColumn() + " debe ser numérico para aplicar la validación de rango");
+                    log.error("Error en validateMinMax: {}, en ID: {}, record: {}", e.getMessage(), record.get("id"), record.get(rule.getName()));
+                    // Acumular el error en la lista temporal
+                    minMaxErrors.add("El campo " + rule.getName() + " debe ser numérico");
                 }
             }
         }
 
-        // Si hay errores de validación de rango y tipo, concatenarlos y añadirlos a la lista de errores
-        if (!rangeTypeValidationErrors.isEmpty()) {
-            errors.add(String.join("; ", rangeTypeValidationErrors));
+        // Si se encontraron errores de min/max, los concatenamos y añadimos a la lista de errores
+        if (!minMaxErrors.isEmpty()) {
+            errors.add(String.join("; ", minMaxErrors));
         }
     }
 
+    // 9 Conteo valores no nulos
+
+    // 10 Orden cuantitativo
     public static void validateColumnOrder(Map<String, String> record, List<OrderColumn> orderColumn, List<String> errors) {
         List<String> orderValidationErrors = new ArrayList<>();
 
@@ -348,7 +314,55 @@ public class Util {
         }
     }
 
+    // 11 Comparación de fechas
+    public static void validateDateComparisons(Map<String, String> record, List<DateComparisonFunction> dateComparisonRules, List<String> errors) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<String> dateComparisonErrors = new ArrayList<>(); // Lista temporal para los errores de comparación de fechas
 
+        for (DateComparisonFunction rule : dateComparisonRules) {
+            String dateOne = record.get(rule.getComparetorOne());
+            String dateTwo = record.get(rule.getComparetorTwo());
+
+            if (dateOne != null && dateTwo != null) {
+                try {
+                    LocalDate localDateOne = LocalDate.parse(dateOne, formatter);
+                    LocalDate localDateTwo = LocalDate.parse(dateTwo, formatter);
+
+                    switch (rule.getOperator()) {
+                        case "greater_than":
+                            if (!localDateOne.isAfter(localDateTwo)) {
+                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser posterior a " + rule.getComparetorTwo());
+                            }
+                            break;
+                        case "less_than":
+                            if (!localDateOne.isBefore(localDateTwo)) {
+                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser anterior a " + rule.getComparetorTwo());
+                            }
+                            break;
+                        case "equal_to":
+                            if (!localDateOne.equals(localDateTwo)) {
+                                dateComparisonErrors.add("El campo " + rule.getComparetorOne() + " debe ser igual a " + rule.getComparetorTwo());
+                            }
+                            break;
+                    }
+                } catch (DateTimeParseException e) {
+                    log.error("Error en validateDateComparisons: {}, en ID: {}, recordOne: {}, recordTwo: {}", e.getMessage(), record.get("id"), record.get(rule.getComparetorOne()), record.get(rule.getComparetorTwo()));
+                    dateComparisonErrors.add("Los campos " + rule.getComparetorOne() + " y " + rule.getComparetorTwo() + " deben tener formato de fecha válido (yyyy-MM-dd)");
+                }
+            } else {
+                // Si uno de los campos es nulo
+                log.error("Error en validateDateComparisons: {}, en ID: {}, recordOne: {}, recordTwo: {}", "Fecha nula", record.get("id"), record.get(rule.getComparetorOne()), record.get(rule.getComparetorTwo()));
+                dateComparisonErrors.add("Los campos " + rule.getComparetorOne() + " y " + rule.getComparetorTwo() + " no deben estar vacíos o nulos");
+            }
+        }
+
+        // Si hay errores en las comparaciones de fechas, los concatenamos y añadimos a la lista principal de errores
+        if (!dateComparisonErrors.isEmpty()) {
+            errors.add(String.join("; ", dateComparisonErrors));
+        }
+    }
+
+    // 11,1 Rango de fechas
     public static void validateDatesInRange(Map<String, String> record, List<DateRangeRule> dateRangeRules, List<String> errors) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Ajusta el formato si es necesario
         List<String> dateValidationErrors = new ArrayList<>();
@@ -393,6 +407,11 @@ public class Util {
         }
     }
 
+
+    // 12 Asociación de columanas para no nulidad
+
+
+    // 13 Condicional de no nulidad
     public static void validateConditionalNonNull(Map<String, String> record, List<ConditionalNonNullRules> rules,
                                                   List<String> errors) {
 
@@ -421,6 +440,5 @@ public class Util {
             }
         }
     }
-
 
 }
