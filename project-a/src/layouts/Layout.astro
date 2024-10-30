@@ -5,12 +5,11 @@ const { title } = Astro.props
 <!doctype html>
 <html lang="en">
     <head>
-        <!--link to global css file-->
+        <!-- Meta información básica -->
         <meta charset="UTF-8">  
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/public/styles/global.css">
         <title>{title}</title>
-        <!-- Importar HTMX -->
-        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
     </head>
     <body>
         <div id="app" class="relative h-screen p-2 gap-2">
@@ -30,3 +29,4 @@ const { title } = Astro.props
         </div>
     </body>
 </html>
+
