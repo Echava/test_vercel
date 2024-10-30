@@ -25,8 +25,12 @@
 }
 .grid-area-main {
     grid-area: main;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    padding: 1rem;
 }
-.grid-area-player {
+.grid-area-footer {
     grid-area: footer;
 }
 .placeholder-centered {
