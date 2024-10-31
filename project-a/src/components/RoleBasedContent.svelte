@@ -13,7 +13,7 @@
   </script>
   
   {#if role === 'admin'}
-    <div class="mt-4">
+    <div class="mt-4 p-2">
       <ButtonAdmin />
     </div>
   {/if}

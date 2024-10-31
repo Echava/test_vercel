@@ -6,24 +6,25 @@ import HeadersList from "../components/HeadersList.svelte";
 import CategoriesContainer from "../components/CategoriesContainer.svelte";
 ---
 <Layout title="Project-a">
-  <div class="grid-area-main h-full">
-    <!-- Columna Izquierda (1fr) -->
-    <div class="space-y-6 overflow-y-auto p-4">
-      <div class="p-4 rounded-lg backdrop-blur-sm">
-        <UploadButton client:load />
-      </div>
-      
-      <div>
-        <RoleBasedContent client:load />
-      </div>
-      
-      <div class="bg-zinc-800/50 p-4 rounded-lg backdrop-blur-sm flex-grow">
-        <HeadersList client:load />
+  <div class="grid-area-main h-full flex flex-col gap-4 p-4">
+    <!-- Área de cabeceras -->
+    <div class="bg-zinc-800/50 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
+      <div class="space-y-4">
+        <div class="p-2">
+          <UploadButton client:load />
+        </div>   
+        
+        <div class="p-2 bg-zinc-700/50 rounded">
+          <HeadersList client:load />
+        </div>
+        <div>
+          <RoleBasedContent client:load />
+        </div>
       </div>
     </div>
     
-    <!-- Columna Derecha (2fr) -->
-    <div class="bg-zinc-800/50 p-4 rounded-lg backdrop-blur-sm overflow-y-auto">
+    <!-- Área de categorías -->
+    <div class="bg-zinc-800/50 p-4 gap-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-grow">
       <CategoriesContainer client:load />
     </div>
   </div>
