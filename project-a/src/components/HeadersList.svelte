@@ -13,7 +13,7 @@
   {#if headers.length > 0}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pr-4">
       {#each headers as header}
-        <div class="bg-zinc-700/50 p-3 rounded-lg">
+        <div class="bg-zinc-700/50 p-3 rounded-lg flex items-center justify-center">
           <span class="text-sm">{header}</span>
         </div>
       {/each}

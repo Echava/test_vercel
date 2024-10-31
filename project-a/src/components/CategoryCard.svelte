@@ -26,8 +26,8 @@
     };
   </script>
   
-  <div class="category-card p-4 border rounded-md bg-white shadow-md">
-    <h3 class="font-bold text-lg">{category.name}</h3>
+  <div class="category-card p-4 border rounded-md shadow-md bg-zinc-300">
+    <h3 class="font-bold text-lg text-zinc-800">{category.name}</h3>
     <button class="mt-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-700" on:click={() => showHeaders = !showHeaders}>+</button>
     
     <!-- Desplegar lista de cabeceras disponibles -->
@@ -41,7 +41,7 @@
   
     <!-- Mostrar cabeceras asociadas -->
     <div class="associated-headers mt-4">
-      <h4 class="font-semibold">Cabeceras Asociadas:</h4>
+      <h4 class="font-semibold text-zinc-500">Cabeceras Asociadas:</h4>
       {#each $associatedHeaders as header}
         <div class="associated-header-item flex items-center mt-1">
           <span class="mr-2">{header}</span>
