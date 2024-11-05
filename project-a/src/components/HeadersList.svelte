@@ -8,7 +8,7 @@
   $: headers = $headersStore;
 </script>
 
-<div class="mt-4 w-full mb-4 mr-2 ml-2">
+<div class="mt-4 w-full max-h-[30vh] overflow-y-auto mb-4 mr-2 ml-2">
   <h2 class="text-lg font-bold mb-4">Cabeceras del Archivo:</h2>
   {#if headers.length > 0}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pr-4">
