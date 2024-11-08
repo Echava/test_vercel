@@ -8,10 +8,10 @@
   $: headers = $headersStore;
 </script>
 
-<div class="mt-4 w-full max-h-[30vh] overflow-y-auto mb-4 mr-2 ml-2">
+<div class="w-full max-h-[30vh] overflow-y-auto">
   <h2 class="text-lg font-bold mb-4">Cabeceras del Archivo:</h2>
   {#if headers.length > 0}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pr-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {#each headers as header}
         <div class="bg-zinc-700/50 p-3 rounded-lg flex items-center justify-center">
           <span class="text-sm">{header}</span>
