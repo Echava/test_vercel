@@ -27,7 +27,7 @@
     }
   </script>
   
-  <div class="bg-zinc-700/50 p-4 rounded-lg">
+  <div class="bg-zinc-800 p-4 rounded-lg">
     <h2 class="text-lg font-bold mb-4 text-white">Asociación de Cabeceras y Tipos</h2>
     
     <div class="flex flex-col sm:flex-row gap-4 mb-4">
