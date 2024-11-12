@@ -27,6 +27,7 @@
     "elysia": "^1.1.23",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "lucide-svelte": "^0.456.0",
     "xlsx": "^0.18.5"
   }
 }
