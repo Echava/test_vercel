@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
-// Definir las categorías iniciales
-const initialCategories = [
+// Definir las reglas de tipo de variable iniciales
+const initialVariableTypeRules = [
   { name: 'notNull' },
   { name: 'numeric' },
   { name: 'string' },
@@ -10,5 +10,7 @@ const initialCategories = [
   { name: 'boolean' }
 ];
 
-// Crear el store con las categorías iniciales
-export const categoriesStore = writable(initialCategories);
+// Crear el store con las reglas iniciales
+export const categoriesStore = writable({
+  variableTypeRules: initialVariableTypeRules
+});

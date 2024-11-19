@@ -3,6 +3,8 @@
   import HeaderTypeAssociation from './HeaderTypeAssociation.svelte';
   import ColumnsOrder from './ColumnsOrder.svelte';
   import RangeWithWord from './RangeWithWord.svelte';
+  import DateRangeRules from './DateRangeRules.svelte';
+
 
 </script>
 
@@ -12,5 +14,6 @@
     <CompareColumnsCard />
     <ColumnsOrder />
     <RangeWithWord />
+    <DateRangeRules />
   </div>
 </div>

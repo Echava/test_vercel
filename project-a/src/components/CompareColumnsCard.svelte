@@ -1,6 +1,8 @@
 <script>
   import { headersStore } from '../stores/headersStore.js';
+  import { rulesStore } from '../stores/rulesStores.js';
   import { writable } from 'svelte/store';
+  import { ChevronDown, ChevronUp } from 'lucide-svelte';
 
   // Store local para manejar las comparaciones entre columnas
   let comparisons = writable([]);
@@ -11,7 +13,7 @@
 
   // Suscribirse al store global de cabeceras
   $: headers = $headersStore;
-  
+
   // Añadir una nueva comparación entre columnas
   const addComparison = () => {
     if (selectedHeader1 && selectedHeader2 && selectedOperator) {
@@ -20,26 +22,46 @@
       selectedHeader1 = '';
       selectedHeader2 = '';
       selectedOperator = '';
+      updateRulesStore();
     }
   };
 
   // Eliminar una comparación existente por su índice
   const removeComparison = (index) => {
     comparisons.update(comps => comps.filter((_, i) => i !== index));
+    updateRulesStore();
   };
 
   // Alternar el estado de expansión del componente
   const toggleExpand = () => {
     isExpanded = !isExpanded;
   };
+
+  // Actualizar el rulesStore para reflejar las comparaciones añadidas
+  function updateRulesStore() {
+    rulesStore.update(rules => ({
+      ...rules,
+      rules: {
+        ...rules.rules,
+        categories: {
+          ...rules.rules.categories,
+          comparisonsWithOtherColumnRules: $comparisons
+        }
+      }
+    }));
+  }
 </script>
 
 <div class="bg-zinc-800 p-4 rounded-lg">
   <div class="flex items-center justify-between">
     <h2 class="text-lg font-bold text-white">Comparar Columnas</h2>
     <!-- Botón para expandir o contraer el componente -->
-    <button on:click={toggleExpand} class="text-white focus:outline-none">
-      {isExpanded ? '▲' : '▼'}
+    <button on:click={toggleExpand} class="text-white hover:text-blue-300 transition-colors">
+      {#if isExpanded}
+        <ChevronUp />
+      {:else}
+        <ChevronDown />
+      {/if}
     </button>
   </div>
   
@@ -110,3 +132,4 @@
     </div>
   {/if}
 </div>
+
