@@ -1,9 +1,10 @@
-package co.com.savia.api.models;
+package co.com.savia.model.report.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data

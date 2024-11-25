@@ -1,15 +1,17 @@
-package co.com.savia.api.models;
+package co.com.savia.model.report.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class SizeFunction {
-    private String name;
-    private int size;
+public class SpecificValuesRule {
+    private String columnName;
+    private List<String> allowedValues;
 }

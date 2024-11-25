@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class VariableTypeFunction {
+public class MinMaxRule {
     private String name;
-    private String type;  // Puede ser "string" o "numeric"
+    private double minValue;
+    private double maxValue;
 }
-

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class RangeWithWordModel {
+public class RangeWithWordRule {
     private double min;       // Valor mínimo del rango
     private double max;       // Valor máximo del rango
     private String expectedType; // Tipo esperado en la columna correspondiente

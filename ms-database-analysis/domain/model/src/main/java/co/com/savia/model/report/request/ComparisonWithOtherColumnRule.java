@@ -1,4 +1,4 @@
-package co.com.savia.api.models;
+package co.com.savia.model.report.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class DateComparisonFunction {
+public class ComparisonWithOtherColumnRule {
     private String comparetorOne;
     private String comparetorTwo;
-    private String operator;  // "greater_than", "less_than", etc.
+    private String operator;  // Puede ser "greater_than", "less_than", etc.
 }
-

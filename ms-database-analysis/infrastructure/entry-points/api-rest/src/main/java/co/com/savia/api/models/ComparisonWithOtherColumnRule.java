@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ComparisonFunction {
+public class ComparisonWithOtherColumnRule {
     private String comparetorOne;
     private String comparetorTwo;
     private String operator;  // Puede ser "greater_than", "less_than", etc.

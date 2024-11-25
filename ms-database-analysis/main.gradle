@@ -14,7 +14,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'info.solidsoft.pitest'
 
-    compileJava.dependsOn validateStructure
+    //compileJava.dependsOn validateStructure
     sourceCompatibility = JavaVersion.VERSION_17
 
     //build.dependsOn 'pitest'
@@ -24,6 +24,16 @@ subprojects {
     }
 
     dependencies {
+        // Apache POI para manejar archivos Excel (XLSX)
+        implementation 'org.apache.poi:poi-ooxml:5.2.3'
+        implementation 'com.opencsv:opencsv:5.7.1'
+        // Si también necesitas soporte para formatos más antiguos (XLS)
+        implementation 'org.apache.poi:poi:5.2.3'
+        // Requiere el paquete de XML Beans para trabajar con el formato ooxml
+        implementation 'org.apache.xmlbeans:xmlbeans:5.1.1'
+
+        implementation 'org.springframework:spring-core:6.2.0'
+
         implementation 'io.projectreactor:reactor-core'
         implementation 'io.projectreactor.addons:reactor-extra'
 

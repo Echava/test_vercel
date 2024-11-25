@@ -1,3 +1,11 @@
+logging:
+  level:
+    org:
+      apache:
+        poi:
+          openxml4j:
+            opc:
+              OPCPackage: ERROR
 server:
   port: 8085
 spring:
@@ -30,3 +38,13 @@ jwt:
   json-exp-roles: "/roles"
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8085"
+general:
+  file-type-report-generated: ".xlsx"
+  sheet-name: "Errores"
+headers:
+  categoriesRules: No Nulos,Nulos,Tipo-variable,Tamaño,Minimos y Maximos, \
+    Campos Duplicados,Diccionario,Comparacion-entre-columnas,Comparacion-Fechas, \
+    orderColumnsRules,rangeWithWordRules,dateRangeRules,specificValuesRules,conditionalNonNullRule
+routes:
+  dictionary-common-names: "C:\\Projects\\GitHub\\Savia\\databases\\BD NOMBRES CIENTIFICOS CORREGIDA 2024 (completa).xlsx"
+  file-path-report-generated: "C:\\Projects\\GitHub\\Savia\\Errors-"
