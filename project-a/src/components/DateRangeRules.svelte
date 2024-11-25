@@ -8,12 +8,8 @@
     let errorMessage = '';
 
     // Valores para la fecha inicial y final
-    let startYear = '';
-    let startMonth = '';
-    let startDay = '';
-    let endYear = '';
-    let endMonth = '';
-    let endDay = '';
+    let startDate = '';
+    let endDate = '';
     let selectedReferenceColumn = ''; // Columna de referencia seleccionada
 
     $: headers = $headersStore;
@@ -23,29 +19,19 @@
 
     // Función para agregar un nuevo rango de fechas
     function addDateRange() {
-        const startDate = `${startYear}-${startMonth}-${startDay}`;
-        const endDate = `${endYear}-${endMonth}-${endDay}`;
-
-        // Validaciones para asegurarse de que las fechas sean válidas
-        if (!isValidDate(startYear, startMonth, startDay) || !isValidDate(endYear, endMonth, endDay) || !selectedReferenceColumn) {
-            errorMessage = 'Ingrese fechas válidas en el formato año-mes-día y seleccione una columna de referencia.';
+        if (!startDate || !endDate || !selectedReferenceColumn) {
+            errorMessage = 'Ingrese fechas válidas y seleccione una columna de referencia.';
             return;
         }
 
         dateRanges.set([{ startDateColumn: startDate, endDateColumn: endDate, referenceDateColumn: selectedReferenceColumn }]);
 
         // Limpiar los campos y el mensaje de error
-        startYear = startMonth = startDay = endYear = endMonth = endDay = '';
+        startDate = endDate = '';
         selectedReferenceColumn = '';
         errorMessage = '';
 
         updateRulesStore();
-    }
-
-    // Validar si el año, mes y día proporcionados son válidos
-    function isValidDate(year, month, day) {
-        const date = new Date(`${year}-${month}-${day}`);
-        return !isNaN(date.getTime()) && year && month && day;
     }
 
     // Función para actualizar el rulesStore
@@ -88,17 +74,13 @@
             <!-- Fecha de inicio -->
             <div class="flex items-center gap-2">
                 <label class="text-white w-32">Fecha Inicial:</label>
-                <input type="number" bind:value={startYear} placeholder="Año" min="1900" max="2100" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
-                <input type="number" bind:value={startMonth} placeholder="Mes" min="1" max="12" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
-                <input type="number" bind:value={startDay} placeholder="Día" min="1" max="31" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
+                <input type="date" bind:value={startDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <!-- Fecha de fin -->
             <div class="flex items-center gap-2">
                 <label class="text-white w-32">Fecha Final:</label>
-                <input type="number" bind:value={endYear} placeholder="Año" min="1900" max="2100" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
-                <input type="number" bind:value={endMonth} placeholder="Mes" min="1" max="12" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
-                <input type="number" bind:value={endDay} placeholder="Día" min="1" max="31" class="bg-zinc-600 text-white p-2 rounded-md w-20" />
+                <input type="date" bind:value={endDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <!-- Selección de columna de referencia -->
@@ -157,4 +139,5 @@
         margin: 0;
     }
 </style>
+
 

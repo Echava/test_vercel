@@ -11,7 +11,7 @@ const initialRules = {
       sizeRules: [],
       minimumAndMaximumRules: [],
       duplicationRules: [],
-      comparisonsWithOtherColumnRules: [], // Aquí se almacenarán las reglas creadas en el componente CompareColumnsCard.svelte
+      comparisonsWithOtherColumnRules: [], 
       comparisonsWithDateRules: [],
       orderColumnsRules: [],
       rangeWithWordRules: [],

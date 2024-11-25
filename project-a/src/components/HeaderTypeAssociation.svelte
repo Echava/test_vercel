@@ -1,49 +1,47 @@
 <script>
     import { headersStore } from '../stores/headersStore.js';
     import { categoriesStore } from '../stores/categoriesStore.js';
+    import { rulesStore } from '../stores/rulesStores.js';
     import { writable } from 'svelte/store';
     import { ChevronDown, ChevronUp } from 'lucide-svelte';
 
-    let selectedHeader = ''; // Cabecera seleccionada para asociar
-    let selectedType = ''; // Tipo de variable seleccionada para la cabecera
-    const associations = writable([]); // Store local para manejar las asociaciones entre cabeceras y tipos
-    let isExpanded = false; // Estado de expansión del componente
+    let selectedHeader = '';
+    let selectedType = '';
+    const associations = writable([]);
+    let isExpanded = false;
 
-    // Obtener las cabeceras del store global
     $: headers = $headersStore;
+    $: variableTypes = $categoriesStore.variableTypeRules; // Corregido: accedemos directamente a variableTypeRules
 
-    // Función para añadir una asociación entre una cabecera y un tipo de variable
     function addAssociation() {
         if (selectedHeader && selectedType) {
             associations.update(assocs => {
-                // Verificar si la cabecera ya está asociada antes de añadirla
                 if (!assocs.some(a => a.header === selectedHeader)) {
                     return [...assocs, { header: selectedHeader, type: selectedType }];
                 }
                 return assocs;
             });
-            // Resetear las selecciones después de añadir una asociación
             selectedHeader = '';
             selectedType = '';
-            updateCategoriesStore();
+            updateRulesStore();
         }
     }
 
-    // Función para eliminar una asociación existente
     function removeAssociation(header) {
         associations.update(assocs => assocs.filter(a => a.header !== header));
-        updateCategoriesStore();
+        updateRulesStore();
     }
 
-    // Función para actualizar el categoriesStore
-    function updateCategoriesStore() {
-        categoriesStore.update(categories => ({
-            ...categories,
-            variableTypeRules: $associations
+    function updateRulesStore() {
+        rulesStore.update(rules => ({
+            ...rules,
+            categories: {
+                ...rules.categories,
+                variableTypeRules: $associations
+            }
         }));
     }
 
-    // Función para alternar el estado de expansión del componente
     function toggleExpand() {
         isExpanded = !isExpanded;
     }
@@ -51,8 +49,7 @@
 
 <div class="bg-zinc-800 p-4 rounded-lg">
     <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-white">Asociación de Cabeceras y Tipos</h2>
-        <!-- Botón para expandir o contraer el componente -->
+        <h2 class="text-lg font-bold text-white">Tipos de Variable</h2>
         <button on:click={toggleExpand} class="text-white hover:text-blue-300 transition-colors">
             {#if isExpanded}
                 <ChevronUp />
@@ -64,7 +61,6 @@
 
     {#if isExpanded}
         <div class="flex flex-col sm:flex-row gap-4 mb-4 mt-4">
-            <!-- Selector para la cabecera a asociar -->
             <select
                 bind:value={selectedHeader}
                 class="bg-zinc-600 text-white p-2 rounded-md flex-grow"
@@ -76,19 +72,17 @@
                 {/each}
             </select>
 
-            <!-- Selector para el tipo de variable a asociar con la cabecera -->
             <select
                 bind:value={selectedType}
                 class="bg-zinc-600 text-white p-2 rounded-md flex-grow"
                 aria-label="Seleccionar tipo de variable"
             >
                 <option value="">Seleccionar tipo</option>
-                {#each $categoriesStore.variableTypeRules as type}
+                {#each variableTypes as type}
                     <option value={type.name}>{type.name}</option>
                 {/each}
             </select>
 
-            <!-- Botón para agregar una nueva asociación -->
             <button
                 on:click={addAssociation}
                 class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
@@ -98,12 +92,10 @@
             </button>
         </div>
 
-        <!-- Mostrar la lista de asociaciones añadidas -->
         <div class="space-y-2">
             {#each $associations as association (association.header)}
                 <div class="flex items-center justify-between bg-zinc-600/50 p-2 rounded-md">
                     <span class="text-white">{association.header}: {association.type}</span>
-                    <!-- Botón para eliminar una asociación específica -->
                     <button
                         on:click={() => removeAssociation(association.header)}
                         class="bg-red-500 text-white p-1 rounded-md hover:bg-red-600 transition-colors"
@@ -116,4 +108,3 @@
         </div>
     {/if}
 </div>
-
