@@ -117,6 +117,7 @@
             ],
             "rangeWithWordRules": [
                 {
+                    "typeColumn": "tipo_arbol",
                     "rangeColumn": "altura",
                     "ranges": [
                         {
@@ -139,8 +140,7 @@
                             "max": null,
                             "type": "Tipo 4"
                         }
-                    ],
-                    "typeColumn": "tipo_arbol"
+                    ]
                 }
             ],
             "dateRangeRules": [
@@ -179,7 +179,13 @@
                     ]
                 }
             ]
-        }
+        }, 
+        "dictionaries": [
+            {
+                "columnName": "nombre_c_2",
+                "dictionaryName": "BD NOMBRES CIENTIFICOS CORREGIDA 2024 (completa)"
+            }
+        ]
     },
     "report": {
         "headers": [
