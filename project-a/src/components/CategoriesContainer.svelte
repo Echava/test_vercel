@@ -4,6 +4,8 @@
   import ColumnsOrder from './ColumnsOrder.svelte';
   import RangeWithWord from './RangeWithWord.svelte';
   import DateRangeRules from './DateRangeRules.svelte';
+  import SizeRules from './SizeRules.svelte';
+  import MinimumAndMaximum from './MinimumAndMaximum.svelte';
 
 
 </script>
@@ -15,5 +17,7 @@
     <ColumnsOrder />
     <RangeWithWord />
     <DateRangeRules />
+    <SizeRules />
+    <MinimumAndMaximum />
   </div>
 </div>
