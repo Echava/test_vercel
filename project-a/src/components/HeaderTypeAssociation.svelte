@@ -3,41 +3,42 @@
     import { categoriesStore } from '../stores/categoriesStore.js';
     import { rulesStore } from '../stores/rulesStores.js';
     import { writable } from 'svelte/store';
-    import { ChevronDown, ChevronUp } from 'lucide-svelte';
+    import { ChevronDown, ChevronUp, X } from 'lucide-svelte';
 
     let selectedHeader = '';
     let selectedType = '';
-    const associations = writable([]);
     let isExpanded = false;
 
     $: headers = $headersStore;
-    $: variableTypes = $categoriesStore.variableTypeRules; // Corregido: accedemos directamente a variableTypeRules
+    $: variableTypes = $categoriesStore.variableTypeRules;
+    $: associations = $rulesStore.categories?.variableTypeRules || [];
 
     function addAssociation() {
         if (selectedHeader && selectedType) {
-            associations.update(assocs => {
-                if (!assocs.some(a => a.header === selectedHeader)) {
-                    return [...assocs, { header: selectedHeader, type: selectedType }];
+            rulesStore.update(rules => {
+                const updatedAssociations = rules.categories?.variableTypeRules || [];
+                if (!updatedAssociations.some(a => a.header === selectedHeader)) {
+                    updatedAssociations.push({ header: selectedHeader, type: selectedType });
                 }
-                return assocs;
+                return {
+                    ...rules,
+                    categories: {
+                        ...rules.categories,
+                        variableTypeRules: updatedAssociations
+                    }
+                };
             });
             selectedHeader = '';
             selectedType = '';
-            updateRulesStore();
         }
     }
 
     function removeAssociation(header) {
-        associations.update(assocs => assocs.filter(a => a.header !== header));
-        updateRulesStore();
-    }
-
-    function updateRulesStore() {
         rulesStore.update(rules => ({
             ...rules,
             categories: {
                 ...rules.categories,
-                variableTypeRules: $associations
+                variableTypeRules: rules.categories?.variableTypeRules.filter(a => a.header !== header) || []
             }
         }));
     }
@@ -93,15 +94,15 @@
         </div>
 
         <div class="space-y-2">
-            {#each $associations as association (association.header)}
+            {#each associations as association (association.header)}
                 <div class="flex items-center justify-between bg-zinc-600/50 p-2 rounded-md">
                     <span class="text-white">{association.header}: {association.type}</span>
                     <button
                         on:click={() => removeAssociation(association.header)}
-                        class="bg-red-500 text-white p-1 rounded-md hover:bg-red-600 transition-colors"
+                        class="text-red-400 hover:text-red-600 transition-colors"
                         aria-label={`Eliminar asociación para ${association.header}`}
                     >
-                        Eliminar
+                        <X size={20} />
                     </button>
                 </div>
             {/each}

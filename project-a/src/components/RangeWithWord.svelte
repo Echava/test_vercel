@@ -1,27 +1,22 @@
 <script>
   import { headersStore } from '../stores/headersStore.js';
   import { rulesStore } from '../stores/rulesStores.js';
-  import { writable } from 'svelte/store';
   import { ChevronDown, ChevronUp, X } from 'lucide-svelte';
 
-  let selectedBaseColumn = ''; // Columna base seleccionada
-  let selectedTypeColumn = ''; // Columna tipo seleccionada
+  let selectedBaseColumn = '';
+  let selectedTypeColumn = '';
   let isExpanded = false;
   let errorMessage = '';
 
-  // Valores para el nuevo rango
   let newMinInteger = '';
   let newMinDecimal = '';
   let newMaxInteger = '';
   let newMaxDecimal = '';
-  let newRangeType = ''; // Tipo del rango ingresado por el usuario
+  let newRangeType = '';
 
   $: headers = $headersStore;
+  $: ranges = $rulesStore.categories?.rangeWithWordRules?.[0]?.ranges || [];
 
-  // Store local para manejar los rangos
-  const ranges = writable([]);
-
-  // Función para agregar un nuevo rango
   function addRange() {
     const min = parseFloat(`${newMinInteger}.${newMinDecimal}`);
     const max = newMaxInteger || newMaxDecimal ? parseFloat(`${newMaxInteger}.${newMaxDecimal}`) : null;
@@ -41,8 +36,7 @@
       return;
     }
 
-    // Verificar solapamiento
-    if ($ranges.some(range => 
+    if (ranges.some(range => 
       (min >= range.min && min <= range.max) || 
       (max !== null && max >= range.min && max <= range.max) ||
       (min <= range.min && (max === null || max >= range.max))
@@ -51,49 +45,37 @@
       return;
     }
 
-    ranges.update(r => [...r, { 
-      min, 
-      max, 
-      type: newRangeType
-    }]);
+    updateRulesStore([...ranges, { min, max, type: newRangeType }]);
 
-    // Limpiar los campos y el mensaje de error
     newMinInteger = newMinDecimal = newMaxInteger = newMaxDecimal = newRangeType = '';
     errorMessage = '';
-
-    updateRulesStore();
   }
 
-  // Función para eliminar un rango
   function removeRange(index) {
-    ranges.update(r => r.filter((_, i) => i !== index));
-    updateRulesStore();
+    updateRulesStore(ranges.filter((_, i) => i !== index));
   }
 
-  // Función para actualizar el rulesStore
-  function updateRulesStore() {
-    if (selectedBaseColumn && selectedTypeColumn && $ranges.length > 0) {
+  function updateRulesStore(updatedRanges) {
+    if (selectedBaseColumn && selectedTypeColumn) {
       rulesStore.update(rules => ({
         ...rules,
-        rules: {
-          ...rules.rules,
-          categories: {
-            ...rules.rules.categories,
-            rangeWithWordRules: [{
+        categories: {
+          ...rules.categories,
+          rangeWithWordRules: [
+            {
               rangeColumn: selectedBaseColumn,
               typeColumn: selectedTypeColumn,
-              ranges: $ranges
-            }]
-          }
+              ranges: updatedRanges
+            }
+          ]
         }
       }));
     }
   }
 
-  // Actualizar el store cuando cambia la columna seleccionada
   $: {
     if (selectedBaseColumn && selectedTypeColumn) {
-      updateRulesStore();
+      updateRulesStore(ranges);
     }
   }
 </script>
@@ -115,8 +97,6 @@
   </div>
 
   {#if isExpanded}
-
-    <!-- Selección de columna base -->
     <div class="mb-4">
       <label for="base-column-select" class="block text-white mb-2">Columna Base:</label>
       <select
@@ -132,7 +112,6 @@
       </select>
     </div>
 
-    <!-- Selección de columna tipo -->
     <div class="mb-4">
       <label for="type-column-select" class="block text-white mb-2">Columna Tipo:</label>
       <select
@@ -148,7 +127,6 @@
       </select>
     </div>
 
-    <!-- Inputs para nuevo rango -->
     <div class="flex flex-wrap gap-2 mb-4">
       <div class="flex-1 min-w-[120px]">
         <label for="min-integer" class="block text-white mb-1">Mínimo:</label>
@@ -211,9 +189,8 @@
       <p class="text-red-500 mb-4">{errorMessage}</p>
     {/if}
 
-    <!-- Lista de rangos -->
     <div class="space-y-2">
-      {#each $ranges as range, index}
+      {#each ranges as range, index}
         <div class="flex items-center bg-zinc-600/50 p-2 rounded-md">
           <span class="text-white flex-grow">
             {range.min} - {range.max === null ? '∞' : range.max} ({range.type})
