@@ -8,37 +8,49 @@
     let isExpanded = false;
 
     $: headers = $headersStore;
-    $: sizeAssociations = $rulesStore.categories?.sizeRules || [];
+    $: sizeRules = $rulesStore.rules.categories?.sizeRules || [];
 
     function toggleExpand() {
         isExpanded = !isExpanded;
     }
 
-    function addSizeAssociation() {
+    function addSizeRule() {
         if (selectedHeader && newSize) {
-            const updatedAssociations = [...sizeAssociations];
-            if (!updatedAssociations.some(a => a.header === selectedHeader)) {
-                updatedAssociations.push({ header: selectedHeader, size: parseInt(newSize, 10) });
-                updateRulesStore(updatedAssociations);
-            }
+            rulesStore.update(store => {
+                const updatedSizeRules = [...(store.rules.categories.sizeRules || [])];
+                if (!updatedSizeRules.some(rule => rule.name === selectedHeader)) {
+                    updatedSizeRules.push({ name: selectedHeader, size: parseInt(newSize, 10) });
+                }
+                return {
+                    ...store,
+                    rules: {
+                        ...store.rules,
+                        categories: {
+                            ...store.rules.categories,
+                            sizeRules: updatedSizeRules
+                        }
+                    }
+                };
+            });
             selectedHeader = '';
             newSize = '';
         }
     }
 
-    function removeSizeAssociation(header) {
-        const updatedAssociations = sizeAssociations.filter(a => a.header !== header);
-        updateRulesStore(updatedAssociations);
-    }
-
-    function updateRulesStore(updatedAssociations) {
-        rulesStore.update(rules => ({
-            ...rules,
-            categories: {
-                ...rules.categories,
-                sizeRules: updatedAssociations
-            }
-        }));
+    function removeSizeRule(name) {
+        rulesStore.update(store => {
+            const updatedSizeRules = store.rules.categories.sizeRules.filter(rule => rule.name !== name);
+            return {
+                ...store,
+                rules: {
+                    ...store.rules,
+                    categories: {
+                        ...store.rules.categories,
+                        sizeRules: updatedSizeRules
+                    }
+                }
+            };
+        });
     }
 </script>
 
@@ -76,7 +88,7 @@
             />
 
             <button
-                on:click={addSizeAssociation}
+                on:click={addSizeRule}
                 class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
                 disabled={!selectedHeader || !newSize}
             >
@@ -85,13 +97,13 @@
         </div>
 
         <div class="space-y-2">
-            {#each sizeAssociations as association (association.header)}
+            {#each sizeRules as rule (rule.name)}
                 <div class="flex items-center justify-between bg-zinc-600/50 p-2 rounded-md">
-                    <span class="text-white">{association.header}: {association.size}</span>
+                    <span class="text-white">{rule.name}: {rule.size}</span>
                     <button
-                        on:click={() => removeSizeAssociation(association.header)}
+                        on:click={() => removeSizeRule(rule.name)}
                         class="text-red-400 hover:text-red-600 transition-colors"
-                        aria-label={`Eliminar asociación para ${association.header}`}
+                        aria-label={`Eliminar regla de tamaño para ${rule.name}`}
                     >
                         <X size={20} />
                     </button>

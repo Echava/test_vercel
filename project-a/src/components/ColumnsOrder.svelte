@@ -9,7 +9,7 @@
   let isExpanded = false;
 
   $: headers = $headersStore;
-  $: savedRules = $rulesStore.categories?.orderColumnsRules || [];
+  $: savedRules = $rulesStore.rules.categories?.orderColumnsRules || [];
   $: canAddColumn = selectedColumns.length < 5;
 
   function addColumn() {
@@ -34,11 +34,14 @@
         orderType: orderType
       };
 
-      rulesStore.update(rules => ({
-        ...rules,
-        categories: {
-          ...rules.categories,
-          orderColumnsRules: [...(rules.categories?.orderColumnsRules || []), newRule]
+      rulesStore.update(store => ({
+        ...store,
+        rules: {
+          ...store.rules,
+          categories: {
+            ...store.rules.categories,
+            orderColumnsRules: [...(store.rules.categories?.orderColumnsRules || []), newRule]
+          }
         }
       }));
 
@@ -50,11 +53,14 @@
   }
 
   function removeRule(index) {
-    rulesStore.update(rules => ({
-      ...rules,
-      categories: {
-        ...rules.categories,
-        orderColumnsRules: rules.categories?.orderColumnsRules.filter((_, i) => i !== index)
+    rulesStore.update(store => ({
+      ...store,
+      rules: {
+        ...store.rules,
+        categories: {
+          ...store.rules.categories,
+          orderColumnsRules: store.rules.categories?.orderColumnsRules.filter((_, i) => i !== index)
+        }
       }
     }));
   }

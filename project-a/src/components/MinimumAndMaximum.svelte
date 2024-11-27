@@ -3,48 +3,71 @@
     import { rulesStore } from '../stores/rulesStores.js';
     import { ChevronDown, ChevronUp, X } from 'lucide-svelte';
 
-    let selectedHeader = '';
-    let minValue = '';
-    let maxValue = '';
     let isExpanded = false;
+    let selectedHeader = '';
+    let minValue = null;
+    let maxValue = null;
 
     $: headers = $headersStore;
-    $: minMaxAssociations = $rulesStore.categories?.minimumAndMaximumRules || [];
+    $: minMaxRules = $rulesStore.rules.categories?.minimumAndMaximumRules || [];
 
     function toggleExpand() {
         isExpanded = !isExpanded;
     }
 
-    function addMinMaxAssociation() {
-        if (selectedHeader && minValue && maxValue) {
-            const updatedAssociations = [...minMaxAssociations];
-            if (!updatedAssociations.some(a => a.header === selectedHeader)) {
-                updatedAssociations.push({ 
-                    header: selectedHeader, 
-                    minValue: parseFloat(minValue), 
-                    maxValue: parseFloat(maxValue) 
-                });
-                updateRulesStore(updatedAssociations);
-            }
+    function addMinMaxRule() {
+        if (selectedHeader && (minValue !== null || maxValue !== null)) {
+            rulesStore.update(store => {
+                const updatedStore = {
+                    ...store,
+                    rules: {
+                        ...store.rules,
+                        categories: {
+                            ...store.rules.categories,
+                            minimumAndMaximumRules: [...(store.rules.categories.minimumAndMaximumRules || [])]
+                        }
+                    }
+                };
+
+                const existingRuleIndex = updatedStore.rules.categories.minimumAndMaximumRules.findIndex(rule => rule.name === selectedHeader);
+                
+                if (existingRuleIndex !== -1) {
+                    updatedStore.rules.categories.minimumAndMaximumRules[existingRuleIndex] = {
+                        name: selectedHeader,
+                        minValue: minValue,
+                        maxValue: maxValue
+                    };
+                } else {
+                    updatedStore.rules.categories.minimumAndMaximumRules.push({
+                        name: selectedHeader,
+                        minValue: minValue,
+                        maxValue: maxValue
+                    });
+                }
+
+                return updatedStore;
+            });
+
             selectedHeader = '';
-            minValue = '';
-            maxValue = '';
+            minValue = null;
+            maxValue = null;
         }
     }
 
-    function removeMinMaxAssociation(header) {
-        const updatedAssociations = minMaxAssociations.filter(a => a.header !== header);
-        updateRulesStore(updatedAssociations);
-    }
-
-    function updateRulesStore(updatedAssociations) {
-        rulesStore.update(rules => ({
-            ...rules,
-            categories: {
-                ...rules.categories,
-                minimumAndMaximumRules: updatedAssociations
-            }
-        }));
+    function removeMinMaxRule(header) {
+        rulesStore.update(store => {
+            const updatedStore = {
+                ...store,
+                rules: {
+                    ...store.rules,
+                    categories: {
+                        ...store.rules.categories,
+                        minimumAndMaximumRules: store.rules.categories.minimumAndMaximumRules.filter(rule => rule.name !== header)
+                    }
+                }
+            };
+            return updatedStore;
+        });
     }
 </script>
 
@@ -92,22 +115,27 @@
             </div>
 
             <button
-                on:click={addMinMaxAssociation}
+                on:click={addMinMaxRule}
                 class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors w-full"
-                disabled={!selectedHeader || !minValue || !maxValue}
+                disabled={!selectedHeader || (minValue === null && maxValue === null)}
             >
                 Agregar
             </button>
         </div>
 
         <div class="space-y-2">
-            {#each minMaxAssociations as association (association.header)}
+            {#each minMaxRules as rule (rule.name)}
                 <div class="flex items-center justify-between bg-zinc-600/50 p-2 rounded-md">
-                    <span class="text-white">{association.header}: Mínimo {association.minValue}, Máximo {association.maxValue}</span>
+                    <span class="text-white">
+                        {rule.name}: 
+                        {rule.minValue !== null ? `Mínimo ${rule.minValue}` : ''}
+                        {rule.minValue !== null && rule.maxValue !== null ? ', ' : ''}
+                        {rule.maxValue !== null ? `Máximo ${rule.maxValue}` : ''}
+                    </span>
                     <button
-                        on:click={() => removeMinMaxAssociation(association.header)}
+                        on:click={() => removeMinMaxRule(rule.name)}
                         class="text-red-400 hover:text-red-600 transition-colors"
-                        aria-label={`Eliminar asociación para ${association.header}`}
+                        aria-label={`Eliminar regla para ${rule.name}`}
                     >
                         <X size={20} />
                     </button>
@@ -116,5 +144,4 @@
         </div>
     {/if}
 </div>
-
 

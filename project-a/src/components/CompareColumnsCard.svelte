@@ -9,18 +9,21 @@
   let isExpanded = false;
 
   $: headers = $headersStore;
-  $: comparisons = $rulesStore.categories?.comparisonsWithOtherColumnRules || [];
+  $: comparisons = $rulesStore.rules.categories?.comparisonsWithOtherColumnRules || [];
 
   const addComparison = () => {
     if (selectedHeader1 && selectedHeader2 && selectedOperator) {
-      rulesStore.update(rules => ({
-        ...rules,
-        categories: {
-          ...rules.categories,
-          comparisonsWithOtherColumnRules: [
-            ...(rules.categories?.comparisonsWithOtherColumnRules || []),
-            { header1: selectedHeader1, header2: selectedHeader2, operator: selectedOperator }
-          ]
+      rulesStore.update(store => ({
+        ...store,
+        rules: {
+          ...store.rules,
+          categories: {
+            ...store.rules.categories,
+            comparisonsWithOtherColumnRules: [
+              ...(store.rules.categories?.comparisonsWithOtherColumnRules || []),
+              { comparetorOne: selectedHeader1, comparetorTwo: selectedHeader2, operator: selectedOperator }
+            ]
+          }
         }
       }));
       selectedHeader1 = '';
@@ -30,11 +33,14 @@
   };
 
   const removeComparison = (index) => {
-    rulesStore.update(rules => ({
-      ...rules,
-      categories: {
-        ...rules.categories,
-        comparisonsWithOtherColumnRules: rules.categories?.comparisonsWithOtherColumnRules.filter((_, i) => i !== index)
+    rulesStore.update(store => ({
+      ...store,
+      rules: {
+        ...store.rules,
+        categories: {
+          ...store.rules.categories,
+          comparisonsWithOtherColumnRules: store.rules.categories?.comparisonsWithOtherColumnRules.filter((_, i) => i !== index)
+        }
       }
     }));
   };
@@ -75,9 +81,9 @@
         aria-label="Seleccionar operador"
       >
         <option value="">Seleccionar operador</option>
-        <option value="<">Menor que (&lt;)</option>
-        <option value=">">Mayor que (&gt;)</option>
-        <option value="=">Igual a (=)</option>
+        <option value="less_than">Menor que (&lt;)</option>
+        <option value="greater_than">Mayor que (&gt;)</option>
+        <option value="equal_to">Igual a (=)</option>
       </select>
   
       <select
@@ -103,11 +109,11 @@
     <div class="space-y-2">
       {#each comparisons as comparison, index (index)}
         <div class="flex items-center justify-between bg-zinc-600/50 p-2 rounded-md">
-          <span class="text-white">{comparison.header1} {comparison.operator} {comparison.header2}</span>
+          <span class="text-white">{comparison.comparetorOne} {comparison.operator} {comparison.comparetorTwo}</span>
           <button
             on:click={() => removeComparison(index)}
             class="text-red-400 hover:text-red-600 transition-colors"
-            aria-label={`Eliminar comparación ${comparison.header1} ${comparison.operator} ${comparison.header2}`}
+            aria-label={`Eliminar comparación ${comparison.comparetorOne} ${comparison.operator} ${comparison.comparetorTwo}`}
           >
             <X size={20} />
           </button>

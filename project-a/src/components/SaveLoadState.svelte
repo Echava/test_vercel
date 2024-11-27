@@ -1,90 +1,11 @@
 <script>
     import { rulesStore } from '../stores/rulesStores.js';
     import { ArrowDownToLine, ArrowUpFromLine } from 'lucide-svelte';
+    import { transformJsonForBackend, transformJsonFromBackend } from '../utils/jsonTransformations.js';
 
     let fileInput;
     let errorMessage = '';
     let successMessage = '';
-
-    function transformJsonForBackend(state) {
-        const transformedState = JSON.parse(JSON.stringify(state));
-        
-        // Transform variableTypeRules
-        if (transformedState.categories?.variableTypeRules) {
-            transformedState.categories.variableTypeRules = transformedState.categories.variableTypeRules.map(rule => ({
-                name: rule.header,
-                type: rule.type
-            }));
-        }
-
-        // Transform sizeRules
-        if (transformedState.categories?.sizeRules) {
-            transformedState.categories.sizeRules = transformedState.categories.sizeRules.map(rule => ({
-                name: rule.header,
-                size: rule.size
-            }));
-        }
-
-        // Transform minimumAndMaximumRules
-        if (transformedState.categories?.minimumAndMaximumRules) {
-            transformedState.categories.minimumAndMaximumRules = transformedState.categories.minimumAndMaximumRules.map(rule => ({
-                name: rule.header,
-                minValue: rule.minValue,
-                maxValue: rule.maxValue
-            }));
-        }
-
-        // Transform comparisonsWithOtherColumnRules
-        if (transformedState.categories?.comparisonsWithOtherColumnRules) {
-            transformedState.categories.comparisonsWithOtherColumnRules = transformedState.categories.comparisonsWithOtherColumnRules.map(rule => ({
-                comparetorOne: rule.header1,
-                comparetorTwo: rule.header2,
-                operator: rule.operator === '<' ? 'less_than' : rule.operator === '>' ? 'greater_than' : 'equal_to'
-            }));
-        }
-
-        return transformedState;
-    }
-
-    function transformJsonFromBackend(state) {
-        const transformedState = JSON.parse(JSON.stringify(state));
-        
-        // Transform variableTypeRules
-        if (transformedState.categories?.variableTypeRules) {
-            transformedState.categories.variableTypeRules = transformedState.categories.variableTypeRules.map(rule => ({
-                header: rule.name,
-                type: rule.type
-            }));
-        }
-
-        // Transform sizeRules
-        if (transformedState.categories?.sizeRules) {
-            transformedState.categories.sizeRules = transformedState.categories.sizeRules.map(rule => ({
-                header: rule.name,
-                size: rule.size
-            }));
-        }
-
-        // Transform minimumAndMaximumRules
-        if (transformedState.categories?.minimumAndMaximumRules) {
-            transformedState.categories.minimumAndMaximumRules = transformedState.categories.minimumAndMaximumRules.map(rule => ({
-                header: rule.name,
-                minValue: rule.minValue,
-                maxValue: rule.maxValue
-            }));
-        }
-
-        // Transform comparisonsWithOtherColumnRules
-        if (transformedState.categories?.comparisonsWithOtherColumnRules) {
-            transformedState.categories.comparisonsWithOtherColumnRules = transformedState.categories.comparisonsWithOtherColumnRules.map(rule => ({
-                header1: rule.comparetorOne,
-                header2: rule.comparetorTwo,
-                operator: rule.operator === 'less_than' ? '<' : rule.operator === 'greater_than' ? '>' : '='
-            }));
-        }
-
-        return transformedState;
-    }
 
     function saveState() {
         const state = transformJsonForBackend($rulesStore);

@@ -6,12 +6,18 @@
   import DateRangeRules from './DateRangeRules.svelte';
   import SizeRules from './SizeRules.svelte';
   import MinimumAndMaximum from './MinimumAndMaximum.svelte';
-
+  import NullRules from './NullRules.svelte';
+  import NotNullRules from './NotNullRules.svelte';
+  import SpecificValuesRules from './SpecificValuesRules.svelte';
+  import ConditionalNonNullRules from './ConditionalNonNullRules.svelte';
+  import Dictionaries from './Dictionaries.svelte';
 
 </script>
 
 <div class="space-y-6">
-  <div class="bg-zinc-800/50 p-4 rounded-lg space-y-4">
+  <div class="bg-customGreen p-4 rounded-lg space-y-4">
+    <NullRules />
+    <NotNullRules />
     <HeaderTypeAssociation />
     <CompareColumnsCard />
     <ColumnsOrder />
@@ -19,5 +25,8 @@
     <DateRangeRules />
     <SizeRules />
     <MinimumAndMaximum />
+    <SpecificValuesRules />
+    <ConditionalNonNullRules />
+    <Dictionaries />
   </div>
 </div>

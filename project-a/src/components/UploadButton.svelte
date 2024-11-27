@@ -1,5 +1,6 @@
 <script>
   import { headersStore } from '../stores/headersStore.js';
+  import { excelFileStore } from '../stores/excelFileStore.js';
   import * as XLSX from 'xlsx';
 
   let fileInput;
@@ -22,8 +23,9 @@
         return;
       }
 
-      // Si no hay duplicados, actualizar el store
+      // Si no hay duplicados, actualizar los stores
       headersStore.set(headers);
+      excelFileStore.set(file);  // Guardamos el archivo en el nuevo store
       console.log(headers);
     };
 

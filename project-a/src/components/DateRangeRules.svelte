@@ -11,7 +11,7 @@
     let selectedReferenceColumn = '';
 
     $: headers = $headersStore;
-    $: dateRanges = $rulesStore.categories?.dateRangeRules || [];
+    $: dateRanges = $rulesStore.rules.categories?.dateRangeRules || [];
 
     function addDateRange() {
         if (!startDate || !endDate || !selectedReferenceColumn) {
@@ -32,11 +32,14 @@
     }
 
     function updateRulesStore(updatedRanges) {
-        rulesStore.update(rules => ({
-            ...rules,
-            categories: {
-                ...rules.categories,
-                dateRangeRules: updatedRanges
+        rulesStore.update(store => ({
+            ...store,
+            rules: {
+                ...store.rules,
+                categories: {
+                    ...store.rules.categories,
+                    dateRangeRules: updatedRanges
+                }
             }
         }));
     }
