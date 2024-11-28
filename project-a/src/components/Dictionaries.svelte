@@ -25,6 +25,7 @@
             // Reset fields
             selectedColumn = '';
             dictionaryName = '';
+
         }
     }
 
@@ -40,10 +41,10 @@
     }
 </script>
 
-<div class="bg-zinc-800 p-4 rounded-lg">
+<div class="bg-customLightGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-white">Diccionarios</h2>
-        <button on:click={toggleExpand} class="text-white hover:text-blue-300 transition-colors" aria-label={isExpanded ? "Contraer sección" : "Expandir sección"}>
+        <h2 class="text-lg font-bold text-black">Diccionarios</h2>
+        <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors" aria-label={isExpanded ? "Contraer sección" : "Expandir sección"}>
             {#if isExpanded}
                 <ChevronUp />
             {:else}

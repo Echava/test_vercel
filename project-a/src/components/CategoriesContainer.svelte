@@ -11,6 +11,8 @@
   import SpecificValuesRules from './SpecificValuesRules.svelte';
   import ConditionalNonNullRules from './ConditionalNonNullRules.svelte';
   import Dictionaries from './Dictionaries.svelte';
+  import ReportHeaders from './ReportHeaders.svelte';
+  import DuplicationRules from './DuplicationRules.svelte';
 
 </script>
 
@@ -28,5 +30,7 @@
     <SpecificValuesRules />
     <ConditionalNonNullRules />
     <Dictionaries />
+    <DuplicationRules />
+    <ReportHeaders />    
   </div>
 </div>

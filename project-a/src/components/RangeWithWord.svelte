@@ -87,12 +87,12 @@
     }
   </script>
   
-  <div class="bg-zinc-800 p-4 rounded-lg">
+  <div class="bg-customLightGreen p-4 rounded-lg">
     <div class="flex justify-between items-center">
-        <h2 class="text-lg font-bold text-white">Rangos con Palabras Clave</h2>
+        <h2 class="text-lg font-bold text-black">Rangos con Palabras Clave</h2>
         <button 
             on:click={toggleExpand}
-            class="text-white hover:text-blue-300 transition-colors"
+            class="text-black hover:text-blue-300 transition-colors"
             aria-label={isExpanded ? "Contraer" : "Expandir"}
         >
             {#if isExpanded}

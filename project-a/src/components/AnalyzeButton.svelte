@@ -24,9 +24,15 @@
       try {
         const transformedRules = transformJsonForAnalysis(rules);
         
+        // Create a Blob from the transformed rules
+        const rulesBlob = new Blob([JSON.stringify(transformedRules)], { type: 'application/json' });
+        
+        // Create a File object from the Blob
+        const rulesFile = new File([rulesBlob], 'rules.json', { type: 'application/json' });
+
         const formData = new FormData();
-        formData.append('excel', excelFile);
-        formData.append('rules', JSON.stringify(transformedRules));
+        formData.append('db-file', excelFile);
+        formData.append('br-file', rulesFile);  // Append the rules as a file
   
         const response = await fetch('https://valued-teal-complete.ngrok-free.app/api/analyze-databases-savia', {
           method: 'POST',

@@ -71,10 +71,10 @@
     }
 </script>
 
-<div class="bg-zinc-800 p-4 rounded-lg">
+<div class="bg-customLightGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-white">Reglas de Mínimo y Máximo</h2>
-        <button on:click={toggleExpand} class="text-white hover:text-blue-300 transition-colors">
+        <h2 class="text-lg font-bold text-black">Reglas de Mínimo y Máximo</h2>
+        <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
             {#if isExpanded}
                 <ChevronUp />
             {:else}
