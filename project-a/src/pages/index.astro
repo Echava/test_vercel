@@ -11,7 +11,7 @@ import AnalyzeButton from "../components/AnalyzeButton.svelte";
 <Layout title="Project-a">
   <div class="grid-area-main h-full flex flex-col gap-4 p-4 ">
     <!-- Área de cabeceras -->
-    <div id="container" class="bg-zinc-800/50 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
+    <div id="container" class="bg-zinc-700 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
       <div class="space-y-4">
         <div class="rounded p-2">
           <UploadButton client:load />
@@ -31,13 +31,8 @@ import AnalyzeButton from "../components/AnalyzeButton.svelte";
       <CategoriesContainer client:load />
     </div>
   
-    <!-- Botón para generar JSON -->
-    <div class="mt-4">
-      <GenerateJsonButton client:load />
-    </div>
-
     <!-- Botón para guardar y cargar estado de la app -->
-    <div>
+    <div class="bg-customLightGreen p-4 gap-4 rounded-lg">
       <SaveLoadState client:load />
     </div>
     <div>

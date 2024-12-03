@@ -43,19 +43,19 @@
     }
 </script>
 
-<div class="bg-zinc-800 p-4 rounded-lg mb-4">
+<div class="bg-zinc-800 p-4 rounded-lg">
     <h2 class="text-lg font-bold text-white mb-4">Guardar/Cargar Estado</h2>
     <div class="flex gap-4">
         <button
             on:click={saveState}
-            class="flex items-center justify-center gap-2 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+            class="flex items-center justify-center gap-2 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors w-1/2"
         >
             <ArrowDownToLine size={20} />
             Guardar Estado
         </button>
         <label
             for="load-state"
-            class="flex items-center justify-center gap-2 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors cursor-pointer"
+            class="flex items-center justify-center gap-2 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors cursor-pointer w-1/2"
         >
             <ArrowUpFromLine size={20} />
             Cargar Estado

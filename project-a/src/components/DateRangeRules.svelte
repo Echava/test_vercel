@@ -64,13 +64,13 @@
     {#if isExpanded}
         <div class="flex flex-col gap-4 mb-4 mt-4">
             <div class="flex items-center gap-2">
-                <label class="text-white w-32">Fecha Inicial:</label>
-                <input type="date" bind:value={startDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
+                <label for="start-date" class="text-white w-32">Fecha Inicial:</label>
+                <input id="start-date" type="date" bind:value={startDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <div class="flex items-center gap-2">
-                <label class="text-white w-32">Fecha Final:</label>
-                <input type="date" bind:value={endDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
+                <label for="end-date" class="text-white w-32">Fecha Final:</label>
+                <input id="end-date" type="date" bind:value={endDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <div class="mb-4">
@@ -117,13 +117,5 @@
         </div>
     {/if}
 </div>
-
-<style>
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-</style>
 
 

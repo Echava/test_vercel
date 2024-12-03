@@ -9,17 +9,17 @@
 </script>
 
 <div class="w-full max-h-[30vh] overflow-y-auto p-2">
-  <h2 class="text-lg font-bold mb-4">Cabeceras del Archivo:</h2>
+  <h2 class="text-lg text-gray-200 font-bold mb-4">Cabeceras del Archivo:</h2>
   {#if headers.length > 0}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {#each headers as header}
-        <div class="bg-white p-3 text-black font-bold rounded-lg flex items-center justify-center">
+        <div class="bg-customLightGreen p-3 text-black font-bold rounded-lg flex items-center justify-center">
           <span class="text-sm">{header}</span>
         </div>
       {/each}
     </div>
   {:else}
-    <p class="text-gray-500">No se ha cargado ningún archivo.</p>
+    <p class="text-gray-200">No se ha cargado ningún archivo.</p>
   {/if}
 </div>
   

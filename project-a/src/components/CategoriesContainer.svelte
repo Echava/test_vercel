@@ -30,7 +30,9 @@
     <SpecificValuesRules />
     <ConditionalNonNullRules />
     <Dictionaries />
-    <DuplicationRules />
-    <ReportHeaders />    
+    <DuplicationRules />        
+  </div>
+  <div class="bg-gray-100 p-4 rounded-lg space-y-4">
+    <ReportHeaders />
   </div>
 </div>

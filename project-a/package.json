@@ -24,6 +24,7 @@
     "@elysiajs/cors": "^1.1.1",
     "@koa/cors": "^5.0.0",
     "astro": "^4.15.8",
+    "axobject-query": "^4.1.0",
     "elysia": "^1.1.23",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",

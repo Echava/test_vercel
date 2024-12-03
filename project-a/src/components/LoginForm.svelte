@@ -53,7 +53,10 @@
 
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-t from-zinc-500 via-fuchsia-600/7">
   <div class="bg-white p-8 rounded-lg shadow-md w-96">
-    <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
+    <div class="flex justify-center">
+      <img src="../images/logo.jpg" alt="Logo" class="h-20 mb-6 w-auto" />
+    </div>
+    
     <form class="space-y-4">
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -77,7 +80,7 @@
       </div>
       <button
         on:click={handleClick}
-        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400"
       >
         Enter
       </button>

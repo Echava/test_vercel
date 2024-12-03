@@ -54,7 +54,7 @@
             <div class="flex space-x-2">
                 <select 
                     bind:value={selectedHeader}
-                    class="flex-grow bg-zinc-700 text-white p-2 rounded-md"
+                    class="flex-grow bg-zinc-700 text-gray-200 p-2 rounded-md"
                 >
                     <option value="">Seleccionar cabecera</option>
                     {#each headers as header}
