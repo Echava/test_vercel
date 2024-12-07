@@ -53,7 +53,7 @@
     }
 </script>
 
-<div class="bg-customLightGreen p-4 rounded-lg">
+<div class="bg-customGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-black">Tipos de Variable</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
@@ -91,7 +91,7 @@
 
             <button
                 on:click={addAssociation}
-                class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors"
+                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors"
                 disabled={!selectedHeader || !selectedType}
             >
                 Agregar

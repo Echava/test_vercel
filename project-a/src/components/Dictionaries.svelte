@@ -41,7 +41,7 @@
     }
 </script>
 
-<div class="bg-customLightGreen p-4 rounded-lg">
+<div class="bg-customGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-black">Diccionarios</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors" aria-label={isExpanded ? "Contraer sección" : "Expandir sección"}>
@@ -78,7 +78,7 @@
                 <button 
                     on:click={addDictionary} 
                     disabled={!selectedColumn || !dictionaryName}
-                    class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Agregar diccionario"
                 >
                     <Plus class="inline-block mr-2" />

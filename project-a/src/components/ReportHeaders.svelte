@@ -11,6 +11,7 @@
 
     function toggleExpand() {
         isExpanded = !isExpanded;
+        
     }
 
     function addHeader() {
@@ -64,7 +65,7 @@
                 <button 
                     on:click={addHeader}
                     disabled={!selectedHeader}
-                    class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus />
                 </button>

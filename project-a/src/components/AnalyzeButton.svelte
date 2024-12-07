@@ -73,7 +73,7 @@
     <button 
       on:click={handleAnalyze} 
       disabled={isLoading || !excelFile}
-      class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {#if isLoading}
         <Loader2 class="inline-block mr-2 h-4 w-4 animate-spin" />

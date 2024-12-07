@@ -11,13 +11,13 @@
   import SpecificValuesRules from './SpecificValuesRules.svelte';
   import ConditionalNonNullRules from './ConditionalNonNullRules.svelte';
   import Dictionaries from './Dictionaries.svelte';
-  import ReportHeaders from './ReportHeaders.svelte';
+  
   import DuplicationRules from './DuplicationRules.svelte';
 
 </script>
 
 <div class="space-y-6">
-  <div class="bg-customGreen p-4 rounded-lg space-y-4">
+  <div class="bg-customLightGreen p-4 rounded-lg space-y-4">
     <NullRules />
     <NotNullRules />
     <HeaderTypeAssociation />
@@ -32,7 +32,5 @@
     <Dictionaries />
     <DuplicationRules />        
   </div>
-  <div class="bg-gray-100 p-4 rounded-lg space-y-4">
-    <ReportHeaders />
-  </div>
+
 </div>

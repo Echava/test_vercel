@@ -50,7 +50,7 @@
   };
 </script>
 
-<div class="bg-customLightGreen p-4 rounded-lg">
+<div class="bg-customGreen p-4 rounded-lg">
   <div class="flex items-center justify-between">
     <h2 class="text-lg font-bold text-black">Comparar Columnas</h2>
     <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
@@ -100,7 +100,7 @@
   
     <button
       on:click={addComparison}
-      class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors w-full mb-4"
+      class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors w-full mb-4"
       disabled={!selectedHeader1 || !selectedHeader2 || !selectedOperator}
     >
       Añadir Comparación

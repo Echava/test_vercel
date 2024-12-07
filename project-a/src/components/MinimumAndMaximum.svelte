@@ -71,7 +71,7 @@
     }
 </script>
 
-<div class="bg-customLightGreen p-4 rounded-lg">
+<div class="bg-customGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-black">Reglas de Mínimo y Máximo</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
@@ -116,7 +116,7 @@
 
             <button
                 on:click={addMinMaxRule}
-                class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors w-full"
+                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors w-full"
                 disabled={!selectedHeader || (minValue === null && maxValue === null)}
             >
                 Agregar

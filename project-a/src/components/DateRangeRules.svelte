@@ -49,7 +49,7 @@
     };
 </script>
 
-<div class="bg-customLightGreen p-4 rounded-lg">
+<div class="bg-customGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-black">Rango de Fechas</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
@@ -64,7 +64,7 @@
     {#if isExpanded}
         <div class="flex flex-col gap-4 mb-4 mt-4">
             <div class="flex items-center gap-2">
-                <label for="start-date" class="text-white w-32">Fecha Inicial:</label>
+                <label for="start-date" class="text-white  w-32">Fecha Inicial:</label>
                 <input id="start-date" type="date" bind:value={startDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
@@ -90,7 +90,7 @@
 
         <button
             on:click={addDateRange}
-            class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors mb-4"
+            class="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors mb-4"
         >
             Agregar Rango de Fechas
         </button>

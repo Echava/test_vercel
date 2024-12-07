@@ -87,7 +87,7 @@
     }
   </script>
   
-  <div class="bg-customLightGreen p-4 rounded-lg">
+  <div class="bg-customGreen p-4 rounded-lg">
     <div class="flex justify-between items-center">
         <h2 class="text-lg font-bold text-black">Rangos con Palabras Clave</h2>
         <button 
@@ -185,7 +185,7 @@
   
         <button
             on:click={addRange}
-            class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors mb-4"
+            class="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors mb-4"
             disabled={!selectedRangeColumn || !selectedTypeColumn}
         >
             Agregar Rango
