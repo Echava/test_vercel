@@ -40,7 +40,7 @@
 
 <div class="bg-customGreen p-4 rounded-lg">
     <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-black">Reglas Nulas</h2>
+        <h2 class="text-lg font-bold text-customTextGreen">Reglas Nulas</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
             {#if isExpanded}
                 <ChevronUp />
@@ -54,7 +54,7 @@
         <div class="flex flex-col sm:flex-row gap-4 mb-4 mt-4">
             <select
                 bind:value={selectedHeader}
-                class="bg-zinc-600 text-white p-2 rounded-md flex-grow"
+                class="bg-green-700 text-white p-2 rounded-md flex-grow"
                 aria-label="Seleccionar cabecera"
             >
                 <option value="">Seleccionar cabecera</option>
@@ -65,7 +65,7 @@
 
             <button
                 on:click={addNullRule}
-                class="bg-green-500 text-black p-2 rounded-md hover:bg-green-600 transition-colors"
+                class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-colors"
                 disabled={!selectedHeader}
             >
                 Agregar

@@ -8,7 +8,8 @@ export default {
 		extend: {
 			colors: {
 				customLightGreen: '#A8D5BA',
-				customGreen: '#6FA582',
+				customGreen: '#ecffee',
+				customTextGreen: '#066810',
 			  },
 		},
 	},

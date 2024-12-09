@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout2.astro";
+import Icon from 'astro-icon';
+
+const steps = [
+  { icon: 'mdi:file-upload', title: 'Cargar Excel', description: 'Sube tu archivo Excel con los datos a analizar.' },
+  { icon: 'mdi:cog', title: 'Configurar Reglas', description: 'Define las reglas y categorías para el análisis.' },
+  { icon: 'mdi:chart-bar', title: 'Analizar Datos', description: 'Procesa tus datos según las reglas configuradas.' },
+  { icon: 'mdi:file-download', title: 'Descargar Resultados', description: 'Obtén los resultados del análisis en formato descargable.' },
+];
+---
+
+<Layout title="Inicio | Analizador de Datos">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-8">Analizador de Datos</h1>
+    
+    <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
+      Simplifica tu análisis de datos con nuestra herramienta intuitiva. Carga, configura, analiza y obtén resultados en minutos.
+    </p>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      {steps.map((step, index) => (
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col items-center text-center">
+          <Icon name={step.icon} class="w-12 h-12 mb-4 text-blue-500" />
+          <h2 class="text-xl font-semibold mb-2">{step.title}</h2>
+          <p class="text-gray-600">{step.description}</p>
+          <div class="mt-4 text-2xl font-bold text-blue-500">{index + 1}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center">
+      <a href="/upload" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+        Comenzar Análisis
+      </a>
+    </div>
+  </main>
+</Layout>
+    <div class="text-center">
+      <a href="/upload" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+        Comenzar Análisis
+      </a>
+    </div>
+  </div>
+</Layout>

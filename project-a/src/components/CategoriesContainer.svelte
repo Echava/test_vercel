@@ -17,7 +17,7 @@
 </script>
 
 <div class="space-y-6">
-  <div class="bg-customLightGreen p-4 rounded-lg space-y-4">
+  <div class="bg-green-700 p-4 rounded-lg space-y-4">
     <NullRules />
     <NotNullRules />
     <HeaderTypeAssociation />
