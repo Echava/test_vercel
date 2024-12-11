@@ -1,7 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import { Menu } from 'lucide-svelte';
-import SideMenu from '../components/SideMenu.svelte';
+import MenuController from '../components/MenuController.svelte';
 
 interface Props {
   title: string;
@@ -16,88 +15,31 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/public/styles/global2.css">
     <title>{title}</title>
     <ViewTransitions />
   </head>
   <body>
     <div class="layout">
-      <header>
-        <button id="menuToggle" aria-label="Toggle menu">
-          <Menu />
-        </button>
-        <h1>{title}</h1>
+      <header class="header">
+        <MenuController client:load />
+        <h1 class="text-xl font-semibold ml-4">{title}</h1>
       </header>
 
-      <SideMenu client:load />
-
-      <main>
+      <main class="main">
         <slot />
       </main>
 
-      <footer>
+      <footer class="footer">
         <p>&copy; 2024 Data Analysis App. Todos los derechos reservados.</p>
       </footer>
     </div>
-
-    <style>
-      .layout {
-        display: grid;
-        grid-template-areas:
-          "header header"
-          "aside main"
-          "footer footer";
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr auto;
-        min-height: 100vh;
-      }
-
-      header {
-        grid-area: header;
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        background-color: #f0f0f0;
-      }
-
-      #menuToggle {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.5rem;
-      }
-
-      main {
-        grid-area: main;
-        padding: 1rem;
-      }
-
-      footer {
-        grid-area: footer;
-        padding: 1rem;
-        background-color: #f0f0f0;
-        text-align: center;
-      }
-
-      @media (max-width: 768px) {
-        .layout {
-          grid-template-areas:
-            "header"
-            "main"
-            "footer";
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-
-    <script>
-      document.addEventListener('astro:page-load', () => {
-        const menuToggle = document.getElementById('menuToggle');
-        const sideMenu = document.querySelector('aside');
-
-        menuToggle.addEventListener('click', () => {
-          sideMenu.classList.toggle('open');
-        });
-      });
-    </script>
   </body>
 </html>
+
+
+
+
+
+
+

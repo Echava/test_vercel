@@ -1,45 +1,45 @@
 ---
-import Layout from "../layouts/Layout2.astro";
-import Icon from 'astro-icon';
+import Layout from '../layouts/Layout2.astro';
+import { FileUp, Settings, BarChart2, HelpCircle } from 'lucide-svelte';
 
-const steps = [
-  { icon: 'mdi:file-upload', title: 'Cargar Excel', description: 'Sube tu archivo Excel con los datos a analizar.' },
-  { icon: 'mdi:cog', title: 'Configurar Reglas', description: 'Define las reglas y categorías para el análisis.' },
-  { icon: 'mdi:chart-bar', title: 'Analizar Datos', description: 'Procesa tus datos según las reglas configuradas.' },
-  { icon: 'mdi:file-download', title: 'Descargar Resultados', description: 'Obtén los resultados del análisis en formato descargable.' },
+const quickActions = [
+  { title: 'Cargar nuevo archivo', icon: FileUp, href: '/cargar-excel' },
+  { title: 'Configurar reglas', icon: Settings, href: '/rules' },
+  { title: 'Iniciar análisis', icon: BarChart2, href: '/analyze' },
+  { title: 'Ver instrucciones', icon: HelpCircle, href: '/instructions' },
 ];
 ---
 
 <Layout title="Inicio | Analizador de Datos">
-  <main class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-center mb-8">Analizador de Datos</h1>
-    
-    <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
-      Simplifica tu análisis de datos con nuestra herramienta intuitiva. Carga, configura, analiza y obtén resultados en minutos.
-    </p>
+  <main class="flex-grow flex flex-col justify-center">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-4xl font-bold text-center mb-8">Bienvenido al Analizador de Datos</h1>
+      
+      <p class="text-xl text-center mb-12 max-w-2xl mx-auto">
+        Selecciona una acción para comenzar tu análisis de datos o explorar las funcionalidades de la aplicación.
+      </p>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-      {steps.map((step, index) => (
-        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col items-center text-center">
-          <Icon name={step.icon} class="w-12 h-12 mb-4 text-blue-500" />
-          <h2 class="text-xl font-semibold mb-2">{step.title}</h2>
-          <p class="text-gray-600">{step.description}</p>
-          <div class="mt-4 text-2xl font-bold text-blue-500">{index + 1}</div>
-        </div>
-      ))}
-    </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {quickActions.map((action) => (
+          <a 
+            href={action.href}
+            class="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
+          >
+            <action.icon size={48} class="mb-4 text-blue-500" />
+            <h2 class="text-xl font-semibold text-center">{action.title}</h2>
+          </a>
+        ))}
+      </div>
 
-    <div class="text-center">
-      <a href="/upload" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-        Comenzar Análisis
-      </a>
+      <div class="mt-12 text-center">
+        <a 
+          href="/analyze" 
+          class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors duration-300 ease-in-out"
+        >
+          Comenzar Análisis
+        </a>
+      </div>
     </div>
   </main>
 </Layout>
-    <div class="text-center">
-      <a href="/upload" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-        Comenzar Análisis
-      </a>
-    </div>
-  </div>
-</Layout>
+
