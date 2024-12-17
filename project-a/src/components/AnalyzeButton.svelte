@@ -46,11 +46,15 @@
       formData.append("db-file", excelFile);
       formData.append("br-file", rulesFile);
 
+      // Obtener el token del localStorage
+      const token = localStorage.getItem('token');
+
       console.log("Enviando solicitud de análisis...");
       const response = await axios.post(`${API_BASE_URL}/analyze-databases-savia`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': '*/*'
+          'Accept': '*/*',
+          'Authorization': `Bearer ${token}` // Añadir el token al header
         },
       });
 
@@ -72,7 +76,14 @@
   async function checkAnalysisStatus() {
     console.log(`Verificando estado del análisis para reportId: ${reportId}`);
     try {
-      const response = await axios.get(`${API_BASE_URL}/report-status/${reportId}`);
+      // Obtener el token del localStorage
+      const token = localStorage.getItem('token');
+
+      const response = await axios.get(`${API_BASE_URL}/report-status/${reportId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Añadir el token al header
+        }
+      });
       console.log("Estado del análisis:", response.data);
       analysisStatus = response.data.status;
 
