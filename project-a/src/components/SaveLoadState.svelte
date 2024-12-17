@@ -43,8 +43,8 @@
     }
 </script>
 
-<div class="bg-zinc-800 p-4 rounded-lg">
-    <h2 class="text-lg font-bold text-white mb-4">Guardar/Cargar Estado</h2>
+<div class="bg-zinc-100 p-4 rounded-lg">
+    <h2 class="text-lg font-bold text-black mb-4">Guardar/Cargar Estado</h2>
     <div class="flex gap-4">
         <button
             on:click={saveState}

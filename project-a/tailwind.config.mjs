@@ -11,7 +11,22 @@ export default {
 				customGreen: '#ecffee',
 				customTextGreen: '#066810',
 			  },
+			backgroundColor: {
+				'custom-green': {
+					50: '#f0fdf4',
+					100: '#dcfce7',		
+				},
+			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		function ({ addUtilities }) {
+			const newUtilities = {
+			  '.custom-green-div': {
+				'@apply bg-custom-green-50 hover:bg-custom-green-100 transition-colors duration-200': {},
+			  },
+			}
+			addUtilities(newUtilities, ['responsive', 'hover'])
+		  },
+	],
 }

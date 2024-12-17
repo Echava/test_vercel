@@ -11,6 +11,8 @@
   let isLoading = false;
   let error = null;
   let resultFilePath = null;
+  let fileName = null;
+  let downloadUrl = null;
   let reportId = null;
   let analysisStatus = null;
   let pollingInterval = null;
@@ -27,6 +29,8 @@
     isLoading = true;
     error = null;
     resultFilePath = null;
+    fileName = null;
+    downloadUrl = null;
     analysisStatus = "Iniciando análisis...";
 
     try {
@@ -76,6 +80,8 @@
         console.log("Análisis completado. Ruta del archivo de resultado:", response.data.resultFilePath);
         clearInterval(pollingInterval);
         resultFilePath = response.data.resultFilePath;
+        fileName = response.data.fileName;
+        downloadUrl = `${API_BASE_URL}/download-excel/${fileName}`;
         isLoading = false;
       } else if (response.data.status === "PENDIENTE") {
         console.log("El análisis aún está en proceso...");
@@ -110,7 +116,7 @@
   });
 </script>
 
-<div class="space-y-4">
+<div class="space-y-4 mb-4">
   <button
     on:click={handleAnalyze}
     disabled={isLoading || !excelFile}
@@ -140,15 +146,21 @@
     </div>
   {/if}
 
-  {#if resultFilePath}
+  {#if downloadUrl}
     <div
       class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
       role="alert"
     >
       <strong class="font-bold">Análisis completado:</strong>
-      <p>El archivo de resultados se ha generado en el servidor.</p>
-      <p>Ruta del archivo: {resultFilePath}</p>
-      <p>Por favor, contacta al administrador del sistema para obtener el archivo.</p>
+      <p>El archivo de resultados está listo para descargar.</p>
+      <a 
+        href={downloadUrl}
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mt-3"
+        download
+      >
+        <Download class="mr-2 h-4 w-4" />
+        Descargar Resultado
+      </a>
     </div>
   {/if}
 </div>

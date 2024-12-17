@@ -49,7 +49,7 @@
     };
 </script>
 
-<div class="bg-customGreen p-4 rounded-lg">
+<div class="custom-green-div p-4 rounded-lg">
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-black">Rango de Fechas</h2>
         <button on:click={toggleExpand} class="text-black hover:text-blue-300 transition-colors">
@@ -64,17 +64,17 @@
     {#if isExpanded}
         <div class="flex flex-col gap-4 mb-4 mt-4">
             <div class="flex items-center gap-2">
-                <label for="start-date" class="text-white  w-32">Fecha Inicial:</label>
+                <label for="start-date" class="text-black  w-32">Fecha Inicial:</label>
                 <input id="start-date" type="date" bind:value={startDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <div class="flex items-center gap-2">
-                <label for="end-date" class="text-white w-32">Fecha Final:</label>
+                <label for="end-date" class="text-black w-32">Fecha Final:</label>
                 <input id="end-date" type="date" bind:value={endDate} class="bg-zinc-600 text-white p-2 rounded-md w-full" />
             </div>
 
             <div class="mb-4">
-                <label for="reference-column" class="block text-white mb-2">Columna de Referencia:</label>
+                <label for="reference-column" class="block text-black mb-2">Columna de Referencia:</label>
                 <select
                     id="reference-column"
                     bind:value={selectedReferenceColumn}

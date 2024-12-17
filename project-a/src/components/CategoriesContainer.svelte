@@ -7,21 +7,21 @@
   import SizeRules from './SizeRules.svelte';
   import MinimumAndMaximum from './MinimumAndMaximum.svelte';
   import NullRules from './NullRules.svelte';
-  // import NotNullRules from './NotNullRules.svelte';
+  import NotNullRules from './NotNullRules.svelte';
   import SpecificValuesRules from './SpecificValuesRules.svelte';
   import ConditionalNonNullRules from './ConditionalNonNullRules.svelte';
   import Dictionaries from './Dictionaries.svelte';
   
   import DuplicationRules from './DuplicationRules.svelte';
 
-  import NotNullRulesTest from './NotNullRulesTest.svelte';
+  // import NotNullRulesTest from './NotNullRulesTest.svelte';
 
 </script>
 
 <div class="space-y-6">
-  <div class="bg-green-700 p-4 rounded-lg space-y-4">
+  <div class=" space-y-4">
     <NullRules />
-    <!-- <NotNullRules /> -->
+    <NotNullRules />
     <HeaderTypeAssociation />
     <CompareColumnsCard />
     <ColumnsOrder />
@@ -33,7 +33,7 @@
     <ConditionalNonNullRules />
     <Dictionaries />
     <DuplicationRules />
-    <NotNullRulesTest />   
+    <!-- <NotNullRulesTest />    -->
 
   </div>
 

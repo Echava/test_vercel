@@ -87,7 +87,7 @@
     }
   </script>
   
-  <div class="bg-customGreen p-4 rounded-lg">
+  <div class="custom-green-div p-4 rounded-lg">
     <div class="flex justify-between items-center">
         <h2 class="text-lg font-bold text-black">Rangos con Palabras Clave</h2>
         <button 

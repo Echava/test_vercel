@@ -12,13 +12,13 @@ import ReportHeaders from "../components/ReportHeaders.svelte";
 <Layout title="Project-a">
   <div class="grid-area-main h-full flex flex-col gap-4 p-4 ">
     <!-- Área de cabeceras -->
-    <div id="container" class="bg-zinc-400 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
+    <div id="container" class="bg-zinc-200 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
       <div class="space-y-4">
         <div class="rounded p-2">
           <UploadButton client:load />
         </div>   
         
-        <div class="bg-zinc-400 rounded p-2">
+        <div class="bg-zinc-200 rounded p-2">
           <HeadersList client:load />
         </div>
         <div>
@@ -28,26 +28,24 @@ import ReportHeaders from "../components/ReportHeaders.svelte";
     </div>
     
     <!-- Área de categorías -->
-    <div class="bg-customGreen p-4 gap-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-grow">
+    <div class="backdrop-blur-sm overflow-y-auto flex-grow">
       <CategoriesContainer client:load />
     </div>
   
     <!-- Botón para guardar y cargar estado de la app -->
-    <div class="bg-customLightGreen p-4 rounded-lg space-y-4">
-      <div class="bg-customGreen p-4 gap-4 rounded-lg">
-        <SaveLoadState client:load />
-      </div>
+    
+    <div>
+      <SaveLoadState client:load />
     </div>
-
-    <div class="bg-customLightGreen p-4 rounded-lg space-y-4">
-      <div class="bg-customGreen p-4 rounded-lg space-y-4">
-        <ReportHeaders client:load />
-      </div>
+        
+    <div>
+      <ReportHeaders client:load />
     </div>
-
+    
     <div>
       <AnalyzeButton client:load />
     </div>
+
   </div>
 </Layout>
 
