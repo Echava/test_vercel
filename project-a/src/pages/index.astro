@@ -8,8 +8,10 @@ import GenerateJsonButton from "../components/GenerateJsonButton.svelte";
 import SaveLoadState from "../components/SaveLoadState.svelte";
 import AnalyzeButton from "../components/AnalyzeButton.svelte";
 import ReportHeaders from "../components/ReportHeaders.svelte";
+
+const currentPath = Astro.url.pathname;
 ---
-<Layout title="Project-a">
+<Layout title="Project-a" currentPath={currentPath}>
   <div class="grid-area-main h-full flex flex-col gap-4 p-4 ">
     <!-- Área de cabeceras -->
     <div id="container" class="bg-zinc-200 p-4 rounded-lg backdrop-blur-sm overflow-y-auto flex-shrink-0">
