@@ -8,8 +8,24 @@ import GenerateJsonButton from "../components/GenerateJsonButton.svelte";
 import SaveLoadState from "../components/SaveLoadState.svelte";
 import AnalyzeButton from "../components/AnalyzeButton.svelte";
 import ReportHeaders from "../components/ReportHeaders.svelte";
+// import { redirect } from 'astro/navigation';
 
-const currentPath = Astro.url.pathname;
+// export async function getServerSideProps({ request, cookies }) {
+//   const token = localStorage.getItem('token');
+
+//   if (!token) {
+//     return redirect('/login');
+//   }
+
+//   return {
+//     props: {
+//         currentPath: Astro.url.pathname,
+        
+//     },
+//   };
+// }
+
+const { currentPath } = Astro.props; // Obtener currentPath de los props
 ---
 <Layout title="Project-a" currentPath={currentPath}>
   <div class="grid-area-main h-full flex flex-col gap-4 p-4 ">
