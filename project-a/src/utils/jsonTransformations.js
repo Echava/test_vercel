@@ -35,6 +35,35 @@ export function transformJsonForBackend(state) {
         }));
     }
 
+    // Transform Dictionaries
+    if (transformedState.rules?.dictionaries) {
+        // Ensure names is an array
+        if (!Array.isArray(transformedState.rules.dictionaries.names)) {
+            transformedState.rules.dictionaries.names = [];
+        }
+
+        // Ensure numbers is an array
+        if (!Array.isArray(transformedState.rules.dictionaries.numbers)) {
+            transformedState.rules.dictionaries.numbers = [];
+        }
+
+        // Transform habits
+        if (Array.isArray(transformedState.rules.dictionaries.habits)) {
+            transformedState.rules.dictionaries.habits = transformedState.rules.dictionaries.habits.map(habit => ({
+                columnNameHabit: habit.columnNameHabit,
+                columnNameToCompare: habit.columnNameToCompare,
+                habits: habit.habits.map(h => ({
+                    habit: h.habit,
+                    value: parseFloat(h.value)
+                })),
+                dictionaryName: habit.dictionaryName,
+                columnNameInDictionary: habit.columnNameInDictionary
+            }));
+        } else {
+            transformedState.rules.dictionaries.habits = [];
+        }
+    }
+
     return transformedState;
 }
 
@@ -73,6 +102,35 @@ export function transformJsonFromBackend(state) {
             header2: rule.comparetorTwo,
             operator: rule.operator === 'less_than' ? '<' : rule.operator === 'greater_than' ? '>' : '='
         }));
+    }
+
+    // Transform Dictionaries
+    if (transformedState.rules?.dictionaries) {
+        // Ensure names is an array
+        if (!Array.isArray(transformedState.rules.dictionaries.names)) {
+            transformedState.rules.dictionaries.names = [];
+        }
+
+        // Ensure numbers is an array
+        if (!Array.isArray(transformedState.rules.dictionaries.numbers)) {
+            transformedState.rules.dictionaries.numbers = [];
+        }
+
+        // Transform habits
+        if (Array.isArray(transformedState.rules.dictionaries.habits)) {
+            transformedState.rules.dictionaries.habits = transformedState.rules.dictionaries.habits.map(habit => ({
+                columnNameHabit: habit.columnNameHabit,
+                columnNameToCompare: habit.columnNameToCompare,
+                habits: habit.habits.map(h => ({
+                    habit: h.habit,
+                    value: parseFloat(h.value)
+                })),
+                dictionaryName: habit.dictionaryName,
+                columnNameInDictionary: habit.columnNameInDictionary
+            }));
+        } else {
+            transformedState.rules.dictionaries.habits = [];
+        }
     }
 
     return transformedState;

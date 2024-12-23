@@ -18,7 +18,11 @@ const initialRules = {
       specificValuesRules: [],
       conditionalNonNullRules: [],    
     },
-    dictionaries: []
+    dictionaries: {
+      names: [],
+      numbers: [],
+      habits: []
+    }
   },
   report: {
     headers: []
