@@ -14,4 +14,5 @@ export default defineConfig({
     buildCommand: 'astro build',
   }),
   integrations: [svelte(), tailwind()],
+
 });
