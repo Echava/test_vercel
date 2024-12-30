@@ -1,15 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/entry.js"
-    }
-  ]
+  "buildCommand": "npx astro build",
+  "installCommand": "npm install",
+  "framework": "astro"
 }
