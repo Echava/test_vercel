@@ -1,15 +1,16 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/api/entry.js"
-      }
-    ]
-  }
+  "version": 2,
+  "framework": "astro",
+  "buildCommand": "astro build",
+  "devCommand": "astro dev",
+  "installCommand": "npm install",
+  "outputDirectory": "dist",
+  "public": true,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
