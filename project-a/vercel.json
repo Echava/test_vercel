@@ -1,6 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "astro build",
-  "devCommand": "astro dev",
-  "framework": "astro"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/entry.js"
+    }
+  ]
 }
