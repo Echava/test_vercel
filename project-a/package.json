@@ -1,7 +1,10 @@
 {
-  "name": "projectx",
+  "name": "project-a",
   "type": "module",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "astro": "astro",
     "build": "astro build",
@@ -12,21 +15,15 @@
     "start:astro": "astro dev",
     "start:both": "concurrently \"npm run start:elysia\" \"npm run start:astro\""
   },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
-    "@types/jsonwebtoken": "^9.0.7",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.6"
-  },
   "dependencies": {
-    "@astrojs/node": "^9.0.0",
-    "@astrojs/svelte": "^7.0.2",
-    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/node": "^7.0.4",
+    "@astrojs/svelte": "^5.0.0",
+    "@astrojs/tailwind": "^5.0.0",
+    "@astrojs/vercel": "^6.0.0",
     "@elysiajs/cors": "^1.1.1",
     "@iconify/svelte": "^4.1.0",
     "@koa/cors": "^5.0.0",
-    "astro": "^5.1.1",
+    "astro": "^4.0.0",
     "astro-icon": "^1.1.4",
     "axios": "^1.7.9",
     "axobject-query": "^4.1.0",
@@ -34,11 +31,14 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "lucide-svelte": "^0.456.0",
-    "svelte": "^5.16.0",
-    "tailwind": "^4.0.0",
+    "svelte": "^4.2.0",
     "xlsx": "^0.18.5"
   },
-  "overrides": {
-    "@sveltejs/vite-plugin-svelte": "^4.0.0-next.6"
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6"
   }
 }
