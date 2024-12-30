@@ -6,13 +6,11 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   output: 'server',
   adapter: vercel({
-    analytics: true,
     webAnalytics: {
       enabled: true,
     },
-    devCommand: 'astro dev',
-    buildCommand: 'astro build',
+    edgeMiddleware: true,
+    functionPerRoute: false,
   }),
   integrations: [svelte(), tailwind()],
-  
 });
