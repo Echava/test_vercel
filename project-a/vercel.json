@@ -1,6 +1,13 @@
 {
   "version": 2,
-  "buildCommand": "npx astro build",
-  "installCommand": "npm install",
-  "framework": "astro"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "zeroConfig": true,
+        "buildCommand": "bun run build"
+      }
+    }
+  ]
 }
