@@ -6,14 +6,13 @@
     "node": "18.x"
   },
   "scripts": {
-    "astro": "bun run astro",
+    "astro": "astro",
     "build": "astro build",
-    "dev": "bun run dev",
-    "preview": "bun run astro preview",
-    "start": "bun run astro dev",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "start": "astro dev",
     "start:elysia": "bun run server.ts",
-    "start:astro": "astro dev",
-    "start:both": "concurrently \"npm run start:elysia\" \"npm run start:astro\""
+    "start:both": "concurrently \"bun run start:elysia\" \"bun run start\""
   },
   "dependencies": {
     "@astrojs/node": "^7.0.4",
@@ -32,12 +31,14 @@
     "jwt-decode": "^4.0.0",
     "lucide-svelte": "^0.456.0",
     "svelte": "^4.2.0",
+    "vite": "^5.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6"
   }

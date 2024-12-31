@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "bun run build",
-  "installCommand": "bun install",
+  "buildCommand": "NODE_OPTIONS='--max_old_space_size=4096' astro build",
+  "installCommand": "bun install --frozen-lockfile",
   "outputDirectory": "dist",
-  "framework": "astro"
+  "framework": "astro",
+  "regions": ["iad1"]
 }
