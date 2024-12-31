@@ -5,6 +5,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   output: 'server',
+  outDir: './dist',
   adapter: vercel(),
   integrations: [svelte(), tailwind()]
 });

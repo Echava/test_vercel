@@ -7,7 +7,7 @@
   },
   "scripts": {
     "astro": "bun run astro",
-    "build": "bun run astro build",
+    "build": "astro build",
     "dev": "bun run dev",
     "preview": "bun run astro preview",
     "start": "bun run astro dev",
