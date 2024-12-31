@@ -6,11 +6,11 @@
     "node": "18.x"
   },
   "scripts": {
-    "astro": "astro",
-    "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview",
-    "start": "astro dev",
+    "astro": "bun run astro",
+    "build": "bun run astro build",
+    "dev": "bun run astro dev",
+    "preview": "bun run astro preview",
+    "start": "bun run astro dev",
     "start:elysia": "bun run server.ts",
     "start:astro": "astro dev",
     "start:both": "concurrently \"npm run start:elysia\" \"npm run start:astro\""
